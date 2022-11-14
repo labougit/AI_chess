@@ -1,5 +1,7 @@
+package chess;
 import java.util.*;
 
+import chess.Board;
 
 public class Piece<T> {
 
@@ -64,7 +66,7 @@ public class Piece<T> {
     }
 
     //////////////////// MOVE function //////////////////////
-    ArrayList<T> pos2_knight(Integer pos1,String cAd, Boards chess_board){
+    ArrayList<T> pos2_knight(Integer pos1,String cAd, Board chess_board){
         //returns the list of move's possible of knight
         ArrayList<T> list = new ArrayList<T>();
 
