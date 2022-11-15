@@ -7,16 +7,16 @@ public class Piece<T> {
 
     //Attributes
 
-    String VIDE = ".";
+    String VIDE = "";
     String name = "";
     String color = "";
     Integer value = 0;
 
     // Name of the pieces
-    ArrayList<String> namePiece = new ArrayList<String>((Arrays.asList(VIDE,"KING","QEEN","TOWER","KNIGHT","BISHOP","PAWN")));
+    ArrayList<String> namePiece = new ArrayList<String>((Arrays.asList(VIDE,"KING","QUEEN","TOWER","KNIGHT","BISHOP","PAWN")));
     
     // Scrore of each piece
-    ArrayList<Integer> valPiece = new ArrayList<Integer>((Arrays.asList(0,0,9,3,3,1)));
+    ArrayList<Integer> valPiece = new ArrayList<Integer>((Arrays.asList(0,0,0,9,3,3,1)));
 
     // For the piece moves, using "mail box" method
     // From Robert Hyatt
@@ -54,19 +54,28 @@ public class Piece<T> {
 
 
     //Constructor
-    Piece(String i_name,String i_color){
+    public <T> Piece(String i_name,String i_color){
         name = i_name;
         color = i_color;
         value = valPiece.get(namePiece.indexOf(name));
     }
 
-    //function return Boolean type
-    boolean isEmpty(){
-        return(name==VIDE);
+    // Empty piece
+    public <T> Piece(){
+        name = "";
+        color = "";
+        value = valPiece.get(namePiece.indexOf(name));
     }
 
+    //function return Boolean type
+    public boolean isEmpty(){
+        return(name==VIDE);
+    }
+    public String afficher(){
+        return("bonjlour");
+    }
     //////////////////// MOVE function //////////////////////
-    ArrayList<T> pos2_knight(Integer pos1,String cAd, Board chess_board){
+    public ArrayList<T> pos2_knight(Integer pos1,String cAd, Board<T> chess_board){
         //returns the list of move's possible of knight
         ArrayList<T> list = new ArrayList<T>();
 
@@ -77,7 +86,10 @@ public class Piece<T> {
     }
 
 
-
+    public void main(String[] args) {
+        Piece<T> myChess = new Piece<T>("f","r");
+        System.out.println(myChess.afficher());
+    }
 
 
 
