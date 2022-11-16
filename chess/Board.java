@@ -10,7 +10,6 @@ public class Board{
     String colorToPlay = "WHITE";
     // Savoir si on est noir ou blanc -> grace a l'API 
     String color = "BLACK";
-
     // Init the 8x8 chess board ArrayList object
     public final ArrayList<String> coord = new ArrayList<String>(Arrays.asList(
         "a8","b8","c8","d8","e8","f8","g8","h8",
@@ -275,6 +274,18 @@ public class Board{
             return "WHITE";
         }
         return "BLACK";
+    }
+
+    // Determine the row from 0(a8-h8) to 7(a1-h1) of the position in parameter
+    public Integer Row(Integer position){
+        // fonction Erwan convert...
+        return position;
+    }
+
+    // Determine the column from 0 to 7 of the position in parameter
+    public Integer Col(Integer position){
+        // fonction Erwan convert...
+        return position;
     }
 
     public static void main(String[] args) {
