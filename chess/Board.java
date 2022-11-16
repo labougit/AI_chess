@@ -25,7 +25,7 @@ public class Board{
         "a1","b1","c1","d1","e1","f1","g1","h1"
     ));
     // Init the chess board
-    public ArrayList<Piece<T>> values;
+    public ArrayList<Piece> values;
     // en passant variable
     public int passant;
     // Castling rights
@@ -115,12 +115,12 @@ public class Board{
      * @promote the pawn is change to requested piece
      * @return true if the move is possible (not king in check), if not false
      */
-    public Boolean movePiece(int start, int finish, String promote, Board<T> myChess){
+    public Boolean movePiece(int start, int finish, String promote, Board myChess){
         
         // Moving piece
-        Piece<T> pieceMoved = this.values.set(finish, this.values.get(start));
+        Piece pieceMoved = this.values.set(finish, this.values.get(start));
         // Replace last piece by empty one
-        Piece<T> pieceTaken = this.values.set(start, new Piece<T>());
+        Piece pieceTaken = this.values.set(start, new Piece());
         
         // KING moved
         if (pieceMoved.name == "KING"){
@@ -132,12 +132,12 @@ public class Board{
                     this.whiteCanCastling63 = false;
                     // Castling, move the rook
                     if (finish == 58){
-                        this.values.set(56, new Piece<T>());
-                        this.values.set(59, new Piece<T>("TOWER","WHITE"));
+                        this.values.set(56, new Piece());
+                        this.values.set(59, new Piece("TOWER","WHITE"));
                     }
                     else if (finish == 62){
-                        this.values.set(63, new Piece<T>());
-                        this.values.set(61, new Piece<T>("TOWER","WHITE"));
+                        this.values.set(63, new Piece());
+                        this.values.set(61, new Piece("TOWER","WHITE"));
                     }
                 }
             }
@@ -149,12 +149,12 @@ public class Board{
                     this.blackCanCastling7 = false;
                     // Castling, move the rook
                     if (finish == 6){
-                        this.values.set(7, new Piece<T>());
-                        this.values.set(5, new Piece<T>("TOWER","BLACK"));
+                        this.values.set(7, new Piece());
+                        this.values.set(5, new Piece("TOWER","BLACK"));
                     }
                     else if (finish == 2){
-                        this.values.set(0, new Piece<T>());
-                        this.values.set(3, new Piece<T>("TOWER","BLACK"));
+                        this.values.set(0, new Piece());
+                        this.values.set(3, new Piece("TOWER","BLACK"));
                     }
                 }
             }
@@ -191,7 +191,7 @@ public class Board{
                     // Take black pawn
                     pieceTaken = this.values.get(finish+8);
                     // Insert an empty piece
-                    this.values.set(finish+8, new Piece<T>());
+                    this.values.set(finish+8, new Piece());
                 }
                 // The white pawn moves 2 squares from starting squar then blacks can take "en passant" next move
                 else if (start == 6 && finish == 4){
@@ -202,7 +202,7 @@ public class Board{
             else {
                 if (this.passant == finish){
                     pieceTaken = this.values.get(finish-8);
-                    this.values.set(finish-8, new Piece<T>());
+                    this.values.set(finish-8, new Piece());
                 }
                 else if (start == 1 && finish == 3){
                     this.passant = finish-8;
@@ -215,19 +215,19 @@ public class Board{
             switch (promote){
                 // QUEEN
                 case "q" :
-                    this.values.set(finish, new Piece<T>("QUEEN",this.color));
+                    this.values.set(finish, new Piece("QUEEN",this.color));
                     break;
                 // KING
                 case "k" :
-                this.values.set(finish, new Piece<T>("KING",this.color));
+                this.values.set(finish, new Piece("KING",this.color));
                 break;
                 // KNIGHT
                 case "n" :
-                this.values.set(finish, new Piece<T>("KNIGHT",this.color));
+                this.values.set(finish, new Piece("KNIGHT",this.color));
                 break;
                 // BISHOP
                 case "b" :
-                this.values.set(finish, new Piece<T>("BISHOP",this.color));
+                this.values.set(finish, new Piece("BISHOP",this.color));
                 break;
             }
         }
@@ -241,7 +241,7 @@ public class Board{
      * @color color of the king
      * @return true if the king is in check, if not false
      */
-    public Boolean isChecked(String color, Board<T> myChess){
+    public Boolean isChecked(String color, Board myChess){
         int position = 0;
         // Find the king in the board
         for (int i = 1; i < 64; i++){
@@ -259,8 +259,8 @@ public class Board{
      * @color of the piece
      * @return true if the destination is accepted, if not false
      */
-    public Boolean isAttacked(int position, String color, Board<T> myChess){
-        ArrayList<T> list = new ArrayList<>();
+    public Boolean isAttacked(int position, String color, Board myChess){
+        ArrayList<Tuple> list = new ArrayList<>();
         list = getMoves(myChess);
         // Path of the position list, return true if one is equal to position in parameter
         /*
@@ -278,8 +278,8 @@ public class Board{
         return "BLACK";
     }
 
-    public static <T> void main(String[] args) {
-        Board<T> myChess = new Board<T>();
+    public static void main(String[] args) {
+        Board myChess = new Board();
         myChess.getMoves(myChess);
         System.out.println(myChess.getValues());
     }
