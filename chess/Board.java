@@ -1,5 +1,3 @@
-// besoin explication ligne 147
-
 package chess;
 import java.util.*;
 // chess package to use new Piece.java methods
@@ -263,18 +261,19 @@ public class Board{
         ArrayList<Tuple> list = new ArrayList<>();
         list = getMoves(myChess);
         // Path of the position list, return true if one is equal to position in parameter
-        /*
-        for (T piece : list){*
-            if(piece == position){
+        for (Tuple move : list){
+            if(move.getSecond() == position){
                 return true;
             }
         }
-        */
         return false;
     }
 
+    // Determine the opposite color in parameter
     public String oppositeColor(String color){
-        
+        if(color == "BLACK"){
+            return "WHITE";
+        }
         return "BLACK";
     }
 
