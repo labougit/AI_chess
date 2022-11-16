@@ -81,25 +81,63 @@ public class Piece {
         ArrayList<Tuple> list = new ArrayList<Tuple>();
         Integer n;
         for(int i=0;i<move_knight.size();i++){
-            n = tab120.get(tab64.get(pos1)+i);
+            n = tab120.get(tab64.get(pos1)+ move_knight.get(i));
             if(n != -1)
             {
-               //if(chess_board.cases[n].isEmpty() || chess_board.cases[n].color()==cAd):
-               list.add(new Tuple(pos1, n, cAd));
+                Board chess_t = chess_board.getValues();
+                if(chess_t.get(n).isEmpty() || chess_t.get(n).color()==cAd){
+                    list.add(new Tuple(pos1, n, cAd));
+                }
             }
         }
         return list;
     }
 
-    public ArrayList<Tuple> pos2_tower(Integer pos1,String cAd, Board<Tuple> chess_board){
+    public ArrayList<Tuple> pos2_tower(Integer pos1,String cAd, Board chess_board){
         //returns the list of move's possible of tower
         ArrayList<Tuple> list = new ArrayList<Tuple>();
+
+        for(int i=0;i<move_tower.size();i++){
+            Integer j=1;
+            while(true){
+                Integer n = tab120.get(tab64.get(pos1)+(move_tower.get(i)*j));
+                if(n != -1)
+                {
+                    Board chess_t = chess_board.getValues();
+                    if(chess_t.get(n).isEmpty() || chess_t.get(n).color()==cAd){
+                        list.add(new Tuple(pos1, n, ""));
+                    }
+                }
+                else{
+                    break;
+                }
+                j = j+1;
+            }
+        }
+
         return list;
     }
 
     public ArrayList<Tuple> pos2_bishop(Integer pos1,String cAd, Board<Tuple> chess_board){
         //returns the list of move's possible of bishop
         ArrayList<Tuple> list = new ArrayList<Tuple>();
+
+        for(int i=0;i<move_tower.size();i++){
+            Integer j=1;
+            while(true){
+                Integer n = tab120.get(tab64.get(pos1)+(move_bishop.get(i)*j));
+                if(n != -1)
+                {
+                    //if(chess_board.cases[n].isEmpty() || chess_board.cases[n].color()==cAd){}
+                        list.add(new Tuple(pos1, n, ""));
+                }
+                else{
+                    break;
+                }
+                j = j+1;
+            }
+        }
+
         return list;
     }
 

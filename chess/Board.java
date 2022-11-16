@@ -57,7 +57,7 @@ public class Board<T>{
      */
 
     // Chess board getter
-    public ArrayList<Piece<T>> getValues(){
+    public ArrayList<Piece> getValues(){
         return values;
     }
 
