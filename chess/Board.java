@@ -6,11 +6,6 @@ import chess.*;
 
 public class Board{
     // Define the next color to play 
-    // Savoir quelle couleur doit jouer -> grace a l'API 
-    String colorToPlay = "WHITE";
-    // Savoir si on est noir ou blanc -> grace a l'API 
-    String color = "BLACK";
-
     // Init the 8x8 chess board ArrayList object
     public final ArrayList<String> coord = new ArrayList<String>(Arrays.asList(
         "a8","b8","c8","d8","e8","f8","g8","h8",
@@ -24,8 +19,8 @@ public class Board{
     ));
     // Init the chess board
     public ArrayList<Piece> values;
-    // en passant variable
-    public int passant;
+    // en enPassant variable
+    public int enPassant;
     // Castling rights
     Boolean whiteCanCastling56;
     Boolean whiteCanCastling63;
@@ -47,9 +42,9 @@ public class Board{
         new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"),
         new Piece("TOWER","WHITE"), new Piece("KNIGHT","WHITE"), new Piece("BISHOP","WHITE"), new Piece("QUEEN","WHITE"),new Piece("KING","WHITE"),new Piece("BISHOP","WHITE"),new Piece("KNIGHT","WHITE"),new Piece("TOWER","WHITE")
         ));
-        // Define the square number to take pawn 'en passant'
+        // Define the square number to take pawn 'en enPassant'
 
-        int passant = -1;
+        int enPassant = -1;
 
         // Castling rights
         whiteCanCastling56 = true;
@@ -73,14 +68,19 @@ public class Board{
         a = 1;
     }
 
-    // Get all possible moves
-    public ArrayList<Tuple> getMoves(Board myChess){
+    /** Get all possible moves
+     * 
+     * @param myChess the latest version of the board composition 
+     * @param color the color of our IA
+     * @return ArrayList<Tuple> of all possible moves possible for each piece
+     */
+    public ArrayList<Tuple> getMoves(Board myChess, String color){
         int counter = 0;
         ArrayList<Tuple> moves = new ArrayList<Tuple>();
         // Init actual color
         // Consult each piece on the board
         for(Piece piece : values){
-            if (piece.color != this.color){
+            if (piece.color != color){
                 // Do nothing if square color is not our
             }
             else if(piece.name == "KING"){
@@ -107,13 +107,16 @@ public class Board{
         return moves;
     }
 
-    /**Move a piece on the board from start to finish position depending to prise en passant, promote, under promote and castle rights
+    /**Move a piece on the board from start to finish position depending to prise en enPassant, promote, under promote and castle rights
      * @start starting position of the piece to move (0..63)
      * @finish  finishing position of the piece moved (0..63)
      * @promote the pawn is change to requested piece
+     * @param myChess the latest version of the board composition 
+     * @param color the color of our IA
+     * @param colorToPlay color of the side to play
      * @return true if the move is possible (not king in check), if not false
      */
-    public Boolean movePiece(int start, int finish, String promote, Board myChess){
+    public Boolean movePiece(int start, int finish, String promote, Board myChess, String color, String colorToPlay){
         
         // Moving piece
         Piece pieceMoved = this.values.set(finish, this.values.get(start));
@@ -123,7 +126,7 @@ public class Board{
         // KING moved
         if (pieceMoved.name == "KING"){
             // White side
-            if (pieceMoved.color == "WHITE"){
+            if (color == "WHITE"){
                 // Moving for the first time, update castling
                 if (start == 60){
                     this.whiteCanCastling56 = false;
@@ -161,7 +164,7 @@ public class Board{
         // TOWER moved
         else if (pieceMoved.name == "TOWER"){
            // White side
-           if (pieceMoved.color == "WHITE"){
+           if (color == "WHITE"){
                 // Castling
                 if (start == 56){
                     this.whiteCanCastling56 = false;
@@ -183,27 +186,27 @@ public class Board{
         // PAWN moved
         else if (pieceMoved.name == "PAWN"){
             // White side
-            if (pieceMoved.color == "WHITE"){
-                // The en passant move
-                if (this.passant == finish){
+            if (color == "WHITE"){
+                // The en enPassant move
+                if (this.enPassant == finish){
                     // Take black pawn
                     pieceTaken = this.values.get(finish+8);
                     // Insert an empty piece
                     this.values.set(finish+8, new Piece());
                 }
-                // The white pawn moves 2 squares from starting squar then blacks can take "en passant" next move
+                // The white pawn moves 2 squares from starting squar then blacks can take "en enPassant" next move
                 else if (start == 6 && finish == 4){
-                    this.passant = finish+8;
+                    this.enPassant = finish+8;
                 }
             }
             // Black side
             else {
-                if (this.passant == finish){
+                if (this.enPassant == finish){
                     pieceTaken = this.values.get(finish-8);
                     this.values.set(finish-8, new Piece());
                 }
                 else if (start == 1 && finish == 3){
-                    this.passant = finish-8;
+                    this.enPassant = finish-8;
                 }
             }        
 
@@ -213,33 +216,35 @@ public class Board{
             switch (promote){
                 // QUEEN
                 case "q" :
-                    this.values.set(finish, new Piece("QUEEN",this.color));
+                    this.values.set(finish, new Piece("QUEEN",color));
                     break;
                 // KING
                 case "k" :
-                this.values.set(finish, new Piece("KING",this.color));
+                this.values.set(finish, new Piece("KING",color));
                 break;
                 // KNIGHT
                 case "n" :
-                this.values.set(finish, new Piece("KNIGHT",this.color));
+                this.values.set(finish, new Piece("KNIGHT",color));
                 break;
                 // BISHOP
                 case "b" :
-                this.values.set(finish, new Piece("BISHOP",this.color));
+                this.values.set(finish, new Piece("BISHOP",color));
                 break;
             }
         }
         // King in check, game over
-        if (!isChecked(oppositeColor(colorToPlay), myChess)){
+        if (!isChecked(color, oppositeColor(colorToPlay), myChess)){
             return false;
         }
         return true;
     }
     /** Determine if the king of the given color is in check
-     * @color color of the king
+     * @param color color of our king
+     * @param colorToPlay color of the side to play
+     * @param myChess the latest version of the board composition 
      * @return true if the king is in check, if not false
      */
-    public Boolean isChecked(String color, Board myChess){
+    public Boolean isChecked(String color, String colorToPlay, Board myChess){
         int position = 0;
         // Find the king in the board
         for (int i = 1; i < 64; i++){
@@ -253,13 +258,13 @@ public class Board{
 
     /** Determine if square at the position in parameter is a destination for the color in parameter
      * Function used for in check and castle moves
-     * @position of the piece
-     * @color of the piece
+     * @param position of the piece
+     * @param color of the piece
      * @return true if the destination is accepted, if not false
      */
     public Boolean isAttacked(int position, String color, Board myChess){
         ArrayList<Tuple> list = new ArrayList<>();
-        list = getMoves(myChess);
+        list = getMoves(myChess, color);
         // Path of the position list, return true if one is equal to position in parameter
         for (Tuple move : list){
             if(move.getSecond() == position){
@@ -277,9 +282,26 @@ public class Board{
         return "BLACK";
     }
 
+    // Determine the row from 0(a8-h8) to 7(a1-h1) of the position in parameter
+    public Integer Row(Integer position){
+        // fonction Erwan convert...
+        return position;
+    }
+
+    // Determine the column from 0 to 7 of the position in parameter
+    public Integer Col(Integer position){
+        // fonction Erwan convert...
+        return position;
+    }
+
+    public Integer getEnPassant(){
+        return this.enPassant;
+    }
+
     public static void main(String[] args) {
         Board myChess = new Board();
-        myChess.getMoves(myChess);
+        String color = "WHITE";
+        myChess.getMoves(myChess, color);
         System.out.println(myChess.getValues());
     }
 }
