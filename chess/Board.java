@@ -42,7 +42,7 @@ public class Board<T>{
         ));
 
         // Define the square number to take pawn 'en passant'
-        int passant = -1;+
+        int passant = -1;
 
         // Castling rights
         Boolean whiteCanCastling56 = true;

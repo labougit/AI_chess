@@ -1,9 +1,10 @@
 package chess;
 import java.util.*;
+import chess.Tuple;
 
 import chess.Board;
 
-public class Piece<T> {
+public class Piece {
 
     //Attributes
 
@@ -36,7 +37,7 @@ public class Piece<T> {
         -1, -1, -1, -1, -1, -1, -1, -1, -1, -1
     )));
 
-    ArrayList<Integer> tab = new ArrayList<Integer>((Arrays.asList(
+    ArrayList<Integer> tab64 = new ArrayList<Integer>((Arrays.asList(
         21, 22, 23, 24, 25, 26, 27, 28,
         31, 32, 33, 34, 35, 36, 37, 38,
         41, 42, 43, 44, 45, 46, 47, 48,
@@ -54,14 +55,14 @@ public class Piece<T> {
 
 
     //Constructor
-    public <T> Piece(String i_name,String i_color){
+    public Piece(String i_name,String i_color){
         name = i_name;
         color = i_color;
         value = valPiece.get(namePiece.indexOf(name));
     }
 
     // Empty piece
-    public <T> Piece(){
+    public Piece(){
         name = "";
         color = "";
         value = valPiece.get(namePiece.indexOf(name));
@@ -75,50 +76,48 @@ public class Piece<T> {
         return("bonjlour");
     }
     //////////////////// MOVE function //////////////////////
-    public ArrayList<T> pos2_knight(Integer pos1,String cAd, Board<T> chess_board){
+    public ArrayList<Tuple> pos2_knight(Integer pos1,String cAd, Board chess_board){
         //returns the list of move's possible of knight
-        ArrayList<T> list = new ArrayList<T>();
-
-        //for(int i=0;i<move_knight.size();i++>){
-            //Integer i = tab120.get(tab64.get(pos1)+i);
-        //}
+        ArrayList<Tuple> list = new ArrayList<Tuple>();
+        Integer n;
+        for(int i=0;i<move_knight.size();i++){
+            n = tab120.get(tab64.get(pos1)+i);
+            if(n != -1)
+            {
+               //if(chess_board.cases[n].isEmpty() || chess_board.cases[n].color()==cAd):
+               list.add(new Tuple(pos1, n, cAd));
+            }
+        }
         return list;
     }
 
-    public ArrayList<T> pos2_tower(Integer pos1,String cAd, Board<T> chess_board){
+    public ArrayList<Tuple> pos2_tower(Integer pos1,String cAd, Board<Tuple> chess_board){
         //returns the list of move's possible of tower
-        ArrayList<T> list = new ArrayList<T>();
+        ArrayList<Tuple> list = new ArrayList<Tuple>();
         return list;
     }
 
-    public ArrayList<T> pos2_bishop(Integer pos1,String cAd, Board<T> chess_board){
+    public ArrayList<Tuple> pos2_bishop(Integer pos1,String cAd, Board<Tuple> chess_board){
         //returns the list of move's possible of bishop
-        ArrayList<T> list = new ArrayList<T>();
+        ArrayList<Tuple> list = new ArrayList<Tuple>();
         return list;
     }
 
-    public ArrayList<T> pos2_pawn(Integer pos1,String cAd, Board<T> chess_board){
+    public ArrayList<Tuple> pos2_pawn(Integer pos1,String cAd, Board<Tuple> chess_board){
         //returns the list of move's possible of pawn
-        ArrayList<T> list = new ArrayList<T>();
+        ArrayList<Tuple> list = new ArrayList<Tuple>();
         return list;
     }
 
-    public ArrayList<T> pos2_king(Integer pos1,String cAd, Board<T> chess_board){
+    public ArrayList<Tuple> pos2_king(Integer pos1,String cAd, Board<Tuple> chess_board){
         //returns the list of move's possible of knight
-        ArrayList<T> list = new ArrayList<T>();
+        ArrayList<Tuple> list = new ArrayList<Tuple>();
 
         //for(int i=0;i<move_knight.size();i++>){
             //Integer i = tab120.get(tab64.get(pos1)+i);
         //}
         return list;
     }
-
-
-    public void main(String[] args) {
-        Piece<T> myChess = new Piece<T>("f","r");
-        System.out.println(myChess.afficher());
-    }
-
 
 
 }
