@@ -2,11 +2,11 @@
 
 package chess;
 import java.util.*;
-// chess package to use new Piece<T>.java methods
+// chess package to use new Piece.java methods
 import chess.*;
 
 
-public class Board<T>{
+public class Board{
     // Define the next color to play 
     // Savoir quelle couleur doit jouer -> grace a l'API 
     String colorToPlay = "WHITE";
@@ -33,23 +33,26 @@ public class Board<T>{
     Boolean whiteCanCastling63;
     Boolean blackCanCastling0;
     Boolean blackCanCastling7;
+
     // Board constructor
     public Board(){
         // The moves history is recovered by API --> need a list of
 
         //Init the chess board at starting position
-        values = new ArrayList<Piece<T>>(Arrays.asList(
-        new Piece<T>("TOWER","BLACK"), new Piece<T>("KNIGHT","BLACK"), new Piece<T>("BISHOP","BLACK"),new Piece<T>("QUEEN","BLACK"), new Piece<T>("KING","BLACK"), new Piece<T>("BISHOP","BLACK"), new Piece<T>("KNIGHT","BLACK"), new Piece<T>("TOWER","BLACK"),
-        new Piece<T>("PAWN","BLACK"), new Piece<T>("PAWN","BLACK"), new Piece<T>("PAWN","BLACK"), new Piece<T>("PAWN","BLACK"), new Piece<T>("PAWN","BLACK"), new Piece<T>("PAWN","BLACK"), new Piece<T>("PAWN","BLACK"), new Piece<T>("PAWN","BLACK"),
-        new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(),
-        new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(),
-        new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(),
-        new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(), new Piece<T>(),
-        new Piece<T>("PAWN","WHITE"), new Piece<T>("PAWN","WHITE"), new Piece<T>("PAWN","WHITE"), new Piece<T>("PAWN","WHITE"), new Piece<T>("PAWN","WHITE"), new Piece<T>("PAWN","WHITE"), new Piece<T>("PAWN","WHITE"), new Piece<T>("PAWN","WHITE"),
-        new Piece<T>("TOWER","WHITE"), new Piece<T>("KNIGHT","WHITE"), new Piece<T>("BISHOP","WHITE"), new Piece<T>("QUEEN","WHITE"),new Piece<T>("KING","WHITE"),new Piece<T>("BISHOP","WHITE"),new Piece<T>("KNIGHT","WHITE"),new Piece<T>("TOWER","WHITE")
+        values = new ArrayList<Piece>(Arrays.asList(
+        new Piece("TOWER","BLACK"), new Piece("KNIGHT","BLACK"), new Piece("BISHOP","BLACK"),new Piece("QUEEN","BLACK"), new Piece("KING","BLACK"), new Piece("BISHOP","BLACK"), new Piece("KNIGHT","BLACK"), new Piece("TOWER","BLACK"),
+        new Piece("PAWN","BLACK"), new Piece("PAWN","BLACK"), new Piece("PAWN","BLACK"), new Piece("PAWN","BLACK"), new Piece("PAWN","BLACK"), new Piece("PAWN","BLACK"), new Piece("PAWN","BLACK"), new Piece("PAWN","BLACK"),
+        new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(),
+        new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(),
+        new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(),
+        new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(), new Piece(),
+        new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"), new Piece("PAWN","WHITE"),
+        new Piece("TOWER","WHITE"), new Piece("KNIGHT","WHITE"), new Piece("BISHOP","WHITE"), new Piece("QUEEN","WHITE"),new Piece("KING","WHITE"),new Piece("BISHOP","WHITE"),new Piece("KNIGHT","WHITE"),new Piece("TOWER","WHITE")
         ));
         // Define the square number to take pawn 'en passant'
-        passant = -1;
+
+        int passant = -1;
+
         // Castling rights
         whiteCanCastling56 = true;
         whiteCanCastling63 = true;
@@ -63,7 +66,7 @@ public class Board<T>{
      */
 
     // Chess board getter
-    public ArrayList<Piece<T>> getValues(){
+    public ArrayList<Piece> getValues(){
         return values;
     }
 
@@ -73,12 +76,12 @@ public class Board<T>{
     }
 
     // Get all possible moves
-    public ArrayList<T> getMoves(Board<T> myChess){
+    public ArrayList<Tuple> getMoves(Board myChess){
         int counter = 0;
-        ArrayList<T> moves = new ArrayList<T>();
+        ArrayList<Tuple> moves = new ArrayList<Tuple>();
         // Init actual color
         // Consult each piece on the board
-        for(Piece<T> piece : values){
+        for(Piece piece : values){
             if (piece.color != this.color){
                 // Do nothing if square color is not our
             }
@@ -277,8 +280,8 @@ public class Board<T>{
 
     public static <T> void main(String[] args) {
         Board<T> myChess = new Board<T>();
-        System.out.println(myChess.getValues());
         myChess.getMoves(myChess);
+        System.out.println(myChess.getValues());
     }
 }
 
