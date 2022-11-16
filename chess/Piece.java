@@ -118,7 +118,7 @@ public class Piece {
         return list;
     }
 
-    public ArrayList<Tuple> pos2_bishop(Integer pos1,String cAd, Board<Tuple> chess_board){
+    public ArrayList<Tuple> pos2_bishop(Integer pos1,String cAd, Board chess_board){
         //returns the list of move's possible of bishop
         ArrayList<Tuple> list = new ArrayList<Tuple>();
 
@@ -141,13 +141,13 @@ public class Piece {
         return list;
     }
 
-    public ArrayList<Tuple> pos2_pawn(Integer pos1,String cAd, Board<Tuple> chess_board){
+    public ArrayList<Tuple> pos2_pawn(Integer pos1,String cAd, Board chess_board){
         //returns the list of move's possible of pawn
         ArrayList<Tuple> list = new ArrayList<Tuple>();
         return list;
     }
 
-    public ArrayList<Tuple> pos2_king(Integer pos1,String cAd, Board<Tuple> chess_board){
+    public ArrayList<Tuple> pos2_king(Integer pos1,String cAd, Board chess_board){
         //returns the list of move's possible of knight
         ArrayList<Tuple> list = new ArrayList<Tuple>();
 
