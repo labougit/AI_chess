@@ -85,6 +85,34 @@ public class Piece<T> {
         return list;
     }
 
+    public ArrayList<T> pos2_tower(Integer pos1,String cAd, Board<T> chess_board){
+        //returns the list of move's possible of tower
+        ArrayList<T> list = new ArrayList<T>();
+        return list;
+    }
+
+    public ArrayList<T> pos2_bishop(Integer pos1,String cAd, Board<T> chess_board){
+        //returns the list of move's possible of bishop
+        ArrayList<T> list = new ArrayList<T>();
+        return list;
+    }
+
+    public ArrayList<T> pos2_pawn(Integer pos1,String cAd, Board<T> chess_board){
+        //returns the list of move's possible of pawn
+        ArrayList<T> list = new ArrayList<T>();
+        return list;
+    }
+
+    public ArrayList<T> pos2_king(Integer pos1,String cAd, Board<T> chess_board){
+        //returns the list of move's possible of knight
+        ArrayList<T> list = new ArrayList<T>();
+
+        //for(int i=0;i<move_knight.size();i++>){
+            //Integer i = tab120.get(tab64.get(pos1)+i);
+        //}
+        return list;
+    }
+
 
     public void main(String[] args) {
         Piece<T> myChess = new Piece<T>("f","r");
