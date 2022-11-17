@@ -107,8 +107,8 @@ public class Board{
                 //moves.addAll(piece.pos2_king(counter,"cAd",myChess,boolean_attack));
             }
             else if(piece.name == "QUEEN"){
-                moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
-                moves.addAll(piece.pos2_bishop(counter,"cAd",myChess));
+                //moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
+                //moves.addAll(piece.pos2_bishop(counter,"cAd",myChess));
             }
             else if(piece.name == "TOWER"){
                 //moves.addAll(piece.pos2_tower(counter,"cAd",myChess));

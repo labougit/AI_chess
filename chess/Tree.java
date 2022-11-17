@@ -49,7 +49,7 @@ public class Tree{
     public static void main(String[] args) {
         Board myChess = new Board();
         //donner la couleur de l'adverssaire
-        Tree arbre = new Tree(3,myChess,false);
+        Tree arbre = new Tree(4,myChess,false);
         arbre.afficher();
 
     }

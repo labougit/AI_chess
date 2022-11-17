@@ -134,7 +134,7 @@ public class Piece {
         //returns the list of move's possible of bishop
         ArrayList<Tuple> list = new ArrayList<Tuple>();
 
-        for(int i=0;i<move_tower.size();i++){
+        for(int i=0;i<move_bishop.size();i++){
             Integer j=1;
             while(true){
                 Integer n = tab120.get(tab64.get(pos1)+(move_bishop.get(i)*j));
@@ -150,7 +150,7 @@ public class Piece {
                 }
                 if(chess_t.get(n).isEmpty() == false){
                     break;
-                }
+               }
                 j = j+1;
             }
         }
