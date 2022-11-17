@@ -62,7 +62,7 @@ public class Board{
     }
     
     public Board(Board i_board){
-        values = i_board.getValues();
+        values = new ArrayList<Piece>(i_board.getValues());
         int enPassant = -1;
 
         // Castling rights
@@ -104,17 +104,17 @@ public class Board{
                 // Do nothing if square color is not our
             }
             else if(piece.name == "KING"){
-                moves.addAll(piece.pos2_king(counter,"cAd",myChess,boolean_attack));
+                //moves.addAll(piece.pos2_king(counter,"cAd",myChess,boolean_attack));
             }
             else if(piece.name == "QUEEN"){
                 moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
                 moves.addAll(piece.pos2_bishop(counter,"cAd",myChess));
             }
             else if(piece.name == "TOWER"){
-                moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
+                //moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
             }
             else if(piece.name == "KNIGHT"){
-                moves.addAll(piece.pos2_knight(counter,"cAd",myChess));
+               // moves.addAll(piece.pos2_knight(counter,"cAd",myChess));
             }
             else if(piece.name == "BISHOP"){
                 moves.addAll(piece.pos2_bishop(counter,"cAd",myChess));
@@ -159,7 +159,7 @@ public class Board{
     }
 
     @Override
-    public String toString() {
+    public String toString() {        
         String sortie = "";
         for(int i =0; i < this.values.size(); i++) {
             if(i%8 == 0) {
@@ -174,6 +174,8 @@ public class Board{
             sortie += " ";
         }
         return sortie;
+
+        
     }
 
     private void writeFile(String line) {

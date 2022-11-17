@@ -17,7 +17,7 @@ public class Piece {
     ArrayList<String> namePiece = new ArrayList<String>((Arrays.asList(VIDE,"KING","QUEEN","TOWER","KNIGHT","BISHOP","PAWN")));
     
     // Scrore of each piece
-    ArrayList<Integer> valPiece = new ArrayList<Integer>((Arrays.asList(0,0,0,9,3,3,1)));
+    ArrayList<Integer> valPiece = new ArrayList<Integer>((Arrays.asList(0,0,9,5,3,3,1)));
 
     // For the piece moves, using "mail box" method
     // From Robert Hyatt
@@ -110,14 +110,17 @@ public class Piece {
             Integer j=1;
             while(true){
                 Integer n = tab120.get(tab64.get(pos1)+(move_tower.get(i)*j));
+                ArrayList<Piece> chess_t = chess_board.getValues();
                 if(n != -1)
                 {
-                    ArrayList<Piece> chess_t = chess_board.getValues();
                     if(chess_t.get(n).isEmpty() || chess_t.get(n).color()==cAd){
                         list.add(new Tuple(pos1, n, ""));
                     }
                 }
                 else{
+                    break;
+                }
+                if(chess_t.get(n).isEmpty() == false){
                     break;
                 }
                 j = j+1;
@@ -135,14 +138,17 @@ public class Piece {
             Integer j=1;
             while(true){
                 Integer n = tab120.get(tab64.get(pos1)+(move_bishop.get(i)*j));
+                ArrayList<Piece> chess_t = chess_board.getValues();
                 if(n != -1)
                 {
-                    ArrayList<Piece> chess_t = chess_board.getValues();
                     if(chess_t.get(n).isEmpty() || chess_t.get(n).color()==cAd){
                         list.add(new Tuple(pos1, n, ""));
                     }
                 }
                 else{
+                    break;
+                }
+                if(chess_t.get(n).isEmpty() == false){
                     break;
                 }
                 j = j+1;
@@ -235,7 +241,7 @@ public class Piece {
 
             if(chess_board.Row(pos1)==1){
                 if(chess_t.get(pos1+8).isEmpty() & chess_t.get(pos1+16).isEmpty()){
-                    list.add(new Tuple(pos1,pos1-16,""));
+                    list.add(new Tuple(pos1,pos1+16,""));
                 }
             }
 
@@ -256,7 +262,7 @@ public class Piece {
                 }
             }
 
-            n = tab120.get(tab64.get(pos1)-11);
+            n = tab120.get(tab64.get(pos1)+11);
             if(n!=-1){
                 if(chess_t.get(n).color()=="WHITE" || chess_board.getEnPassant()==n){
                     if(n<8){
