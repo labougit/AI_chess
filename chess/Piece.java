@@ -19,6 +19,9 @@ public class Piece {
     // Scrore of each piece
     ArrayList<Integer> valPiece = new ArrayList<Integer>((Arrays.asList(0,0,9,5,3,3,1)));
 
+    public Integer getVal() {
+        return (value);
+    }
     // For the piece moves, using "mail box" method
     // From Robert Hyatt
     // It can be show that move of piece is possible

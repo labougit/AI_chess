@@ -10,6 +10,7 @@ import chess.Tuple;
 public class Board{
     // Define the next color to play 
     // Init the 8x8 chess board ArrayList object
+    public String color;
     public final ArrayList<String> coord = new ArrayList<String>(Arrays.asList(
         "a8","b8","c8","d8","e8","f8","g8","h8",
         "a7","b7","c7","d7","e7","f7","g7","h7",
@@ -20,6 +21,9 @@ public class Board{
         "a2","b2","c2","d2","e2","f2","g2","h2",
         "a1","b1","c1","d1","e1","f1","g1","h1"
     ));
+
+    public void SetColor(String i_color) { color = i_color;}
+    public String getColor() { return color; }
 
     public String getCoord(Integer pos)
     {
@@ -36,7 +40,7 @@ public class Board{
     Boolean blackCanCastling7;
 
     // Board constructor
-    public Board(){
+    public Board(String i_color){
         // The moves history is recovered by API --> need a list of
 
         //Init the chess board at starting position
@@ -59,6 +63,7 @@ public class Board{
         whiteCanCastling63 = true;
         blackCanCastling0 = true;
         blackCanCastling7 = true;
+        this.SetColor(i_color);
     }
     
     public Board(Board i_board){
@@ -70,6 +75,8 @@ public class Board{
         whiteCanCastling63 = true;
         blackCanCastling0 = true;
         blackCanCastling7 = true;
+        this.SetColor(i_board.getColor());
+
     }
 
 
@@ -104,17 +111,17 @@ public class Board{
                 // Do nothing if square color is not our
             }
             else if(piece.name == "KING"){
-                //moves.addAll(piece.pos2_king(counter,"cAd",myChess,boolean_attack));
+                moves.addAll(piece.pos2_king(counter,"cAd",myChess,boolean_attack));
             }
             else if(piece.name == "QUEEN"){
-                //moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
-                //moves.addAll(piece.pos2_bishop(counter,"cAd",myChess));
+                moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
+                moves.addAll(piece.pos2_bishop(counter,"cAd",myChess));
             }
             else if(piece.name == "TOWER"){
-                //moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
+                moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
             }
             else if(piece.name == "KNIGHT"){
-               // moves.addAll(piece.pos2_knight(counter,"cAd",myChess));
+                moves.addAll(piece.pos2_knight(counter,"cAd",myChess));
             }
             else if(piece.name == "BISHOP"){
                 moves.addAll(piece.pos2_bishop(counter,"cAd",myChess));
@@ -397,8 +404,25 @@ public class Board{
         return this.whiteCanCastling63;
     }
 
+    public Integer heuristic(){
+        int WhiteScore = 0;
+        int BlackScore = 0;
+
+        for(int i = 0; i <this.getValues().size(); i++){
+            if(this.getValues().get(i).color()=="WHITE"){
+                    WhiteScore = WhiteScore + this.getValues().get(i).getVal();
+            }
+            else{
+                    BlackScore = BlackScore + this.getValues().get(i).getVal();
+
+            }
+        }
+        if(this.getColor() == "WHITE"){return WhiteScore-BlackScore;}
+        else{return BlackScore - WhiteScore;}
+    }
+
     public static void main(String[] args) {
-        Board myChess = new Board();
+        Board myChess = new Board("WHITE");
         String color = "WHITE";
         ArrayList<Tuple> all_move = myChess.getMoves(color,myChess, false);
         Integer a = all_move.get(0).getFirst();

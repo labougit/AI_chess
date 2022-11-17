@@ -54,7 +54,7 @@ public class API {
         return White;
     }
 
-    private Board updateEchiquier(String[] pos, Board board) {
+    private Board updateEchiquier(String[] pos) {
 
         //Check if you're white or black
         if(first) {
@@ -62,29 +62,32 @@ public class API {
             this.White = pos.length == 0 ? true:false;
         }
 
+        String color = this.White ? "WHITE": "BLACK";
+        Board init_board = new Board(color);
+
         writeFile("Update board: " + Arrays.toString(pos) + "\nlength: " + pos.length);
         //Update Board
         for (String pos_move: pos) {
             if(pos_move.matches("[a-h][0-9][a-h][0-9]")) {
-                board.move_piece_without_check(pos_move);
+                init_board.move_piece_without_check(pos_move);
             }
             
         }
 
-        return board;
+        return init_board;
 
     }
     
     public Board refresh() {
         writeFile("Begin position;");
         //init Board
-        Board init_board = new Board();
-
+        Board init_board;
         try {
             String[] position = queuePos.take();
-            init_board = updateEchiquier(position, init_board);
+            init_board = updateEchiquier(position);
         } catch (Exception e) {
             e.printStackTrace();
+            init_board = new Board("WHITE");
         }
         writeFile("Finish position;");
 
@@ -97,6 +100,7 @@ public class API {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
 
         return init_board;
         
