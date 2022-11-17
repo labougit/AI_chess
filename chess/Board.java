@@ -17,6 +17,11 @@ public class Board{
         "a2","b2","c2","d2","e2","f2","g2","h2",
         "a1","b1","c1","d1","e1","f1","g1","h1"
     ));
+
+    public String getCoord(Integer pos)
+    {
+        return coord.get(pos);
+    }
     // Init the chess board
     public ArrayList<Piece> values;
     // en enPassant variable
@@ -106,6 +111,7 @@ public class Board{
         }
         return moves;
     }
+
 
     /**Move a piece on the board from start to finish position depending to prise en enPassant, promote, under promote and castle rights
      * @start starting position of the piece to move (0..63)
@@ -318,8 +324,10 @@ public class Board{
     public static void main(String[] args) {
         Board myChess = new Board();
         String color = "WHITE";
-        myChess.getMoves(color,myChess, false);
-        System.out.println(myChess.getValues());
+        ArrayList<Tuple> all_move = myChess.getMoves(color,myChess, false);
+        Integer a = all_move.get(0).getFirst();
+        System.out.println(all_move.get(0).getFirst().toString());
+        System.out.println(myChess.getCoord(all_move.get(0).getFirst()).toString());
         System.out.println(myChess.Col(63));
     }
 }
