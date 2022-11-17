@@ -74,7 +74,7 @@ public class Board{
      * @param color the color of our IA
      * @return ArrayList<Tuple> of all possible moves possible for each piece
      */
-    public ArrayList<Tuple> getMoves(Board myChess, String color){
+    public ArrayList<Tuple> getMoves(String color,Board myChess, Boolean boolean_attack){
         int counter = 0;
         ArrayList<Tuple> moves = new ArrayList<Tuple>();
         // Init actual color
@@ -84,7 +84,7 @@ public class Board{
                 // Do nothing if square color is not our
             }
             else if(piece.name == "KING"){
-                moves.addAll(piece.pos2_king(counter,"cAd",myChess));
+                moves.addAll(piece.pos2_king(counter,"cAd",myChess,boolean_attack));
             }
             else if(piece.name == "QUEEN"){
                 moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
@@ -264,7 +264,7 @@ public class Board{
      */
     public Boolean isAttacked(int position, String color, Board myChess){
         ArrayList<Tuple> list = new ArrayList<>();
-        list = getMoves(myChess, color);
+        list = getMoves(color,myChess, false);
         // Path of the position list, return true if one is equal to position in parameter
         for (Tuple move : list){
             if(move.getSecond() == position){
@@ -318,7 +318,7 @@ public class Board{
     public static void main(String[] args) {
         Board myChess = new Board();
         String color = "WHITE";
-        myChess.getMoves(myChess, color);
+        myChess.getMoves(color,myChess, false);
         System.out.println(myChess.getValues());
         System.out.println(myChess.Col(63));
     }

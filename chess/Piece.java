@@ -173,7 +173,7 @@ public class Piece {
                 }
             }
 
-            if(chess_t.ROW(pos1)==6){
+            if(chess_board.Row(pos1)==6){
                 if(chess_t.get(pos1-8).isEmpty() & chess_t.get(pos1-16).isEmpty()){
                     list.add(new Tuple(pos1,pos1-16,""));
                 }
@@ -182,7 +182,7 @@ public class Piece {
 
             n = tab120.get(tab64.get(pos1)-11);
             if(n!=-1){
-                if(chess_t.get(n).color()=="BLACK" || chess_board.enPassant()==n){
+                if(chess_t.get(n).color()=="BLACK" || chess_board.getEnPassant()==n){
                     if(n<8){
                         list.add(new Tuple(pos1,n,"q"));
                         list.add(new Tuple(pos1,n,"r"));
@@ -198,7 +198,7 @@ public class Piece {
 
             n = tab120.get(tab64.get(pos1)-9);
             if(n!=-1){
-                if(chess_t.get(n).color()=="BLACK" || chess_board.enPassant()==n){
+                if(chess_t.get(n).color()=="BLACK" || chess_board.getEnPassant()==n){
                     if(n<8){
                         list.add(new Tuple(pos1,n,"q"));
                         list.add(new Tuple(pos1,n,"r"));
@@ -233,7 +233,7 @@ public class Piece {
                 }
             }
 
-            if(chess_t.ROW(pos1)==1){
+            if(chess_board.Row(pos1)==1){
                 if(chess_t.get(pos1-8).isEmpty() & chess_t.get(pos1-16).isEmpty()){
                     list.add(new Tuple(pos1,pos1-16,""));
                 }
@@ -242,7 +242,7 @@ public class Piece {
 
             n = tab120.get(tab64.get(pos1)+9);
             if(n!=-1){
-                if(chess_t.get(n).color()=="WHITE" || chess_board.enPassant()==n){
+                if(chess_t.get(n).color()=="WHITE" || chess_board.getEnPassant()==n){
                     if(n<8){
                         list.add(new Tuple(pos1,n,"q"));
                         list.add(new Tuple(pos1,n,"r"));
@@ -258,7 +258,7 @@ public class Piece {
 
             n = tab120.get(tab64.get(pos1)-11);
             if(n!=-1){
-                if(chess_t.get(n).color()=="WHITE" || chess_board.enPassant()==n){
+                if(chess_t.get(n).color()=="WHITE" || chess_board.getEnPassant()==n){
                     if(n<8){
                         list.add(new Tuple(pos1,n,"q"));
                         list.add(new Tuple(pos1,n,"r"));
@@ -292,32 +292,32 @@ public class Piece {
         {
             return list;
         }
-        return list;
 
         String c = chess_board.oppositeColor(cAd);
-        if(c=="WHITE")
+
+        if(c.equals("WHITE"))
         {
-            if(chess_board.getWhite_can_castle_63){
+            if(chess_board.getWhiteCanCastling63()){
                 if(chess_t.get(63).name=="TOWER" &&
                 chess_t.get(63).color()=="WHITE" &&
                 chess_t.get(61).isEmpty() &&
                 chess_t.get(62).isEmpty() &&
-                chess_board.is_attacks(61,"BLACK") == false &&
-                chess_board.is_attacks(62,"BLACK") == false &&
-                chess_board.is_attacks(pos1,"BLACK") == false){
+                chess_board.isAttacked(61,"BLACK",chess_board) == false &&
+                chess_board.isAttacked(62,"BLACK",chess_board) == false &&
+                chess_board.isAttacked(pos1,"BLACK",chess_board) == false){
                     list.add(new Tuple(pos1, 62, ""));
 
                 }
             }
-            if(chess_board.getWhite_can_castle_56){
+            if(chess_board.getWhiteCanCastling56()){
                 if(chess_t.get(56).name=="TOWER" &&
                 chess_t.get(56).color()=="WHITE" &&
                 chess_t.get(57).isEmpty() &&
                 chess_t.get(58).isEmpty() &&
                 chess_t.get(59).isEmpty() &&
-                chess_board.is_attacks(58,"BLACK") == false &&
-                chess_board.is_attacks(59,"BLACK") == false &&
-                chess_board.is_attacks(pos1,"BLACK") == false){
+                chess_board.isAttacked(58,"BLACK",chess_board) == false &&
+                chess_board.isAttacked(59,"BLACK",chess_board) == false &&
+                chess_board.isAttacked(pos1,"BLACK",chess_board) == false){
                     list.add(new Tuple(pos1, 58, ""));
 
                 }
@@ -325,29 +325,29 @@ public class Piece {
 
         }
 
-        else:
+        else
         {
-            if(chess_board.getWhite_can_castle_7){
+            if(chess_board.getBlackCanCastling7()){
                 if(chess_t.get(7).name=="TOWER" &&
                 chess_t.get(7).color()=="WHITE" &&
                 chess_t.get(5).isEmpty() &&
                 chess_t.get(6).isEmpty() &&
-                chess_board.is_attacks(5,"BLACK") == false &&
-                chess_board.is_attacks(6,"BLACK") == false &&
-                chess_board.is_attacks(pos1,"BLACK") == false){
+                chess_board.isAttacked(5,"BLACK",chess_board) == false &&
+                chess_board.isAttacked(6,"BLACK",chess_board) == false &&
+                chess_board.isAttacked(pos1,"BLACK",chess_board) == false){
                     list.add(new Tuple(pos1, 6, ""));
 
                 }
             }
-            if(chess_board.getWhite_can_castle_0){
+            if(chess_board.getBlackCanCastling0()){
                 if(chess_t.get(0).name=="TOWER" &&
                 chess_t.get(0).color()=="WHITE" &&
                 chess_t.get(1).isEmpty() &&
                 chess_t.get(2).isEmpty() &&
                 chess_t.get(3).isEmpty() &&
-                chess_board.is_attacks(2,"BLACK") == false &&
-                chess_board.is_attacks(3,"BLACK") == false &&
-                chess_board.is_attacks(pos1,"BLACK") == false){
+                chess_board.isAttacked(2,"BLACK",chess_board) == false &&
+                chess_board.isAttacked(3,"BLACK",chess_board) == false &&
+                chess_board.isAttacked(pos1,"BLACK",chess_board) == false){
                     list.add(new Tuple(pos1, 2, ""));
 
                 }
