@@ -60,6 +60,18 @@ public class Board{
         blackCanCastling0 = true;
         blackCanCastling7 = true;
     }
+    
+    public Board(Board i_board){
+        values = i_board.getValues();
+        int enPassant = -1;
+
+        // Castling rights
+        whiteCanCastling56 = true;
+        whiteCanCastling63 = true;
+        blackCanCastling0 = true;
+        blackCanCastling7 = true;
+    }
+
 
     /* Moves list function, return all possible moves depending to the color
      * Useful for heuristic

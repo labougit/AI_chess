@@ -234,7 +234,7 @@ public class Piece {
             }
 
             if(chess_board.Row(pos1)==1){
-                if(chess_t.get(pos1-8).isEmpty() & chess_t.get(pos1-16).isEmpty()){
+                if(chess_t.get(pos1+8).isEmpty() & chess_t.get(pos1+16).isEmpty()){
                     list.add(new Tuple(pos1,pos1-16,""));
                 }
             }

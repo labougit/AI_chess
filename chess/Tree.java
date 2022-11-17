@@ -23,11 +23,30 @@ public class Tree{
             for (Tuple move : all_move){
                 Integer pos_1 = move.getFirst();
                 Integer pos_2 = move.getSecond();
-                //chess_board_fil = setBoard(chess.getCoord(pos1),chess.getCoord(pos_2),chess,i_color);
-                Tree node_f = new Tree(profondeur-1,chess_board_fil,!i_color);
+                Board chess_copy = new Board(chess);
+                System.out.println(chess_copy.getCoord(pos_1).toString()+chess_copy.getCoord(pos_2).toString());
+                chess_copy.move_piece_without_check(chess_copy.getCoord(pos_1).toString()+chess_copy.getCoord(pos_2).toString());                Tree node_f = new Tree(profondeur-1,chess_copy,!i_color);
                 children.add(node_f);
             }
         }
+    }
+
+    public Board getRacine() { return chess_node;}
+    public void afficher() {
+        System.out.println(this.getRacine().toString());
+        for (Tree node : this.children) {
+            node.afficher();
+        }
+    }
+
+    
+
+    public static void main(String[] args) {
+        Board myChess = new Board();
+        String color = "WHITE";
+        Tree arbre = new Tree(2,myChess,true);
+        arbre.afficher();
+
     }
 
 }
