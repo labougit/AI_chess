@@ -284,18 +284,35 @@ public class Board{
 
     // Determine the row from 0(a8-h8) to 7(a1-h1) of the position in parameter
     public Integer Row(Integer position){
-        // fonction Erwan convert...
-        return position;
+        int row = position % 8;
+        return row;
     }
 
     // Determine the column from 0 to 7 of the position in parameter
     public Integer Col(Integer position){
         // fonction Erwan convert...
-        return position;
+        int row = position / 8;
+        return row;
     }
 
     public Integer getEnPassant(){
         return this.enPassant;
+    }
+
+    public Boolean getBlackCanCastling0(){
+        return this.blackCanCastling0;
+    }
+
+    public Boolean getBlackCanCastling7(){
+        return this.blackCanCastling7;
+    }
+
+    public Boolean getWhiteCanCastling56(){
+        return this.whiteCanCastling63;
+    }
+
+    public Boolean getWhiteCanCastling63(){
+        return this.whiteCanCastling63;
     }
 
     public static void main(String[] args) {
