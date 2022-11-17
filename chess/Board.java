@@ -318,8 +318,9 @@ public class Board{
     public static void main(String[] args) {
         Board myChess = new Board();
         String color = "WHITE";
-        myChess.getMoves(myChess, color);
-        System.out.println(myChess.getValues());
+        //myChess.getMoves(myChess, color);
+        //System.out.println(myChess.getValues());
+        System.out.println(myChess.Col(63));
     }
 }
 
