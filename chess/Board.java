@@ -1,7 +1,10 @@
 package chess;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 // chess package to use new Piece.java methods
 import chess.*;
+import chess.Tuple;
 
 
 public class Board{
@@ -98,6 +101,65 @@ public class Board{
             counter += 1;
         }
         return moves;
+    }
+
+    /* Convert the string move to index for the array list which represents the baord
+     * i.e.: "e2e7" return a Tuple object where Tuple(12, 57, ""), 12 for e2 and 57 for e7
+     * 
+     */
+    private Tuple convert_string_move_to_index(String move) {
+        String first_pos = move.substring(0,2);
+        String last_pos = move.substring(2);
+
+        // A beautiful function to get the index 
+        int first_index = ((int)first_pos.charAt(0))-(int)'a' + (8-Integer.parseInt(first_pos.substring(1)))*8;
+        int second_index = ((int)last_pos.charAt(0))-(int)'a' + (8-Integer.parseInt(last_pos.substring(1)))*8;
+        return new Tuple(first_index, second_index, "");
+    }
+
+    /* Move a piece without check if the movement isn't illegal
+     * @arg move: a simple string which give the move, i.e: "e2e7"
+     * 
+     */
+    public void move_piece_without_check(String move) {
+        writeFile("move: " + move);
+
+        Tuple positions = convert_string_move_to_index(move);
+
+        writeFile("position: "+ String.valueOf(positions.getFirst()) + ":"+ String.valueOf(positions.getSecond()));
+        
+        Piece first_Pieces = values.get(positions.getFirst());
+        writeFile("Piece: " + first_Pieces.name + "from color: " + first_Pieces.color);
+        values.set(positions.getFirst(), new Piece());
+        values.set(positions.getSecond(), first_Pieces);
+    }
+
+    @Override
+    public String toString() {
+        String sortie = "";
+        for(int i =0; i < this.values.size(); i++) {
+            if(i%8 == 0) {
+                sortie += "|\n|";
+            }
+            String name = this.values.get(i).name;
+            String color = this.values.get(i).color.length() >0 ? this.values.get(i).color.substring(0, 1): "";
+            sortie += " "+ name + color;
+            for (int j =0; j < 9-(name.length()+color.length()); j++) {
+                sortie += " ";
+            }
+            sortie += " ";
+        }
+        return sortie;
+    }
+
+    private void writeFile(String line) {
+        try {
+            FileWriter myWriter = new FileWriter("debug/debug_board.txt", true);
+            myWriter.write(line+"\n");
+            myWriter.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
     }
 
     public static  void main(String[] args) {
