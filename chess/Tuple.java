@@ -21,7 +21,7 @@ public class Tuple {
     {
         b = i;
     }
-    public void setThird(Integer i)
+    public void setThird(String i)
     {
         c = i;
     }

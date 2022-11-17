@@ -2,7 +2,9 @@ package api;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.*;
+import chess.Board;
 
 public class API {
 
@@ -16,12 +18,10 @@ public class API {
     //Create thread
     Entree stdin_stdout = new Entree(queueGo, queuePos, queueMove);
 
-    ArrayList<Integer> echiquier;
 
     
 
-    public API(ArrayList<Integer> echiquier) {
-        this.echiquier = echiquier;
+    public API() {
 
         //Run the thread
         stdin_stdout.start();
@@ -54,7 +54,7 @@ public class API {
         return White;
     }
 
-    private void updateEchiquier(String[] pos) {
+    private Board updateEchiquier(String[] pos, Board board) {
 
         //Check if you're white or black
         if(first) {
@@ -62,15 +62,27 @@ public class API {
             this.White = pos.length == 0 ? true:false;
         }
 
+        writeFile("Update board: " + Arrays.toString(pos) + "\nlength: " + pos.length);
+        //Update Board
+        for (String pos_move: pos) {
+            if(pos_move.matches("[a-h][0-9][a-h][0-9]")) {
+                board.move_piece_without_check(pos_move);
+            }
+            
+        }
+
+        return board;
+
     }
     
-    public boolean refresh() {
+    public Board refresh() {
         writeFile("Begin position;");
-        //Update position
-        String[] position;
+        //init Board
+        Board init_board = new Board();
+
         try {
-            position = queuePos.take();
-            updateEchiquier(position);
+            String[] position = queuePos.take();
+            init_board = updateEchiquier(position, init_board);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -81,17 +93,18 @@ public class API {
             queueGo.take();
             writeFile("Finish Go take;");
             writeFile("I'm white: " + ImWhite());
-            return true;
+            
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+
+        return init_board;
         
     }
 
     private void writeFile(String line) {
         try {
-            FileWriter myWriter = new FileWriter("debug_API.txt", true);
+            FileWriter myWriter = new FileWriter("debug/debug_API.txt", true);
             myWriter.write(line+"\n");
             myWriter.close();
           } catch (IOException e) {
