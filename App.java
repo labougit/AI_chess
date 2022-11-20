@@ -34,11 +34,11 @@ public class App {
 
             //Creation de l'arbre
             writeFile("Create Tree");
-            Tree arbre = new Tree(2, init, api_stdin.ImWhite(), new Tuple(0, 0, ""));
+            Tree arbre = new Tree(4, init, api_stdin.ImWhite(), new Tuple(0, 0, ""));
 
             //devine le bon chemin
             writeFile("End tree, find max mov");
-            String moves = arbre.minimax(2, true).getThird();
+            String moves = arbre.minimax(4, true).getThird();
             writeFile("Moves: " + moves);
             String[] move_list = moves.split(" ");            
             api_stdin.moveSend(move_list[move_list.length-2]);

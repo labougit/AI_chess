@@ -53,7 +53,7 @@ public class Piece {
 
     //Vector's moving of piece since 'tab64'
     ArrayList<Integer> move_tower = new ArrayList<Integer>((Arrays.asList(-10,10,-1,1)));
-    ArrayList<Integer> move_bishop = new ArrayList<Integer>((Arrays.asList(-11,9,11,9)));
+    ArrayList<Integer> move_bishop = new ArrayList<Integer>((Arrays.asList(-11,-9,11,9)));
     ArrayList<Integer> move_knight = new ArrayList<Integer>((Arrays.asList(-12,-21,-19,-8,12,21,19,8)));
 
 

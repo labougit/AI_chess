@@ -63,6 +63,9 @@ public class Entree extends Thread {
 
                 String[] array_moves = (line.substring(line.indexOf("moves")+5)).split(" ");
                 writeFile("Array_moves: "+line.substring(line.indexOf("moves")+5)+"\n");
+                if(array_moves.length>0) {
+                    array_moves = Arrays.copyOfRange(array_moves, 1, array_moves.length);
+                }
                 try {
                     this.queuePos.put(array_moves);
                 } catch (Exception e) {
