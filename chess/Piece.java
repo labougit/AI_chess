@@ -17,7 +17,7 @@ public class Piece {
     ArrayList<String> namePiece = new ArrayList<String>((Arrays.asList(VIDE,"KING","QUEEN","TOWER","KNIGHT","BISHOP","PAWN")));
     
     // Scrore of each piece
-    ArrayList<Integer> valPiece = new ArrayList<Integer>((Arrays.asList(0,99999,9,5,3,3,1)));
+    ArrayList<Integer> valPiece = new ArrayList<Integer>((Arrays.asList(0,99999,200,5,3,3,1)));
 
     public Integer getVal() {
         return (value);
@@ -97,7 +97,7 @@ public class Piece {
             if(n != -1)
             {
                 ArrayList<Piece> chess_t = chess_board.getValues();
-                if(chess_t.get(n).isEmpty() || chess_t.get(n).color()==cAd){
+                if(chess_t.get(n).isEmpty() || cAd.equals(chess_t.get(n).color())){
                     list.add(new Tuple(pos1, n, cAd));
                 }
             }
@@ -116,7 +116,7 @@ public class Piece {
                 ArrayList<Piece> chess_t = chess_board.getValues();
                 if(n != -1)
                 {
-                    if(chess_t.get(n).isEmpty() || chess_t.get(n).color()==cAd){
+                    if(chess_t.get(n).isEmpty() || cAd.equals(chess_t.get(n).color())){
                         list.add(new Tuple(pos1, n, ""));
                     }
                 }
@@ -165,7 +165,7 @@ public class Piece {
         //returns the list of move's possible of pawn
         ArrayList<Tuple> list = new ArrayList<Tuple>();
         ArrayList<Piece> chess_t = chess_board.getValues();
-        if(color == "WHITE"){
+        if("WHITE".equals(color)){
             Integer n = tab120.get(tab64.get(pos1)-10);
             if(n!=-1){
                 if(chess_t.get(n).isEmpty()){
@@ -193,7 +193,7 @@ public class Piece {
 
             n = tab120.get(tab64.get(pos1)-11);
             if(n!=-1){
-                if(chess_t.get(n).color()=="BLACK" || chess_board.getEnPassant()==n){
+                if("BLACK".equals(chess_t.get(n).color()) || chess_board.getEnPassant()==n){
                     if(n<8){
                         list.add(new Tuple(pos1,n,"q"));
                         list.add(new Tuple(pos1,n,"r"));
@@ -209,7 +209,7 @@ public class Piece {
 
             n = tab120.get(tab64.get(pos1)-9);
             if(n!=-1){
-                if(chess_t.get(n).color()=="BLACK" || chess_board.getEnPassant()==n){
+                if("BLACK".equals(chess_t.get(n).color()) || chess_board.getEnPassant()==n){
                     if(n<8){
                         list.add(new Tuple(pos1,n,"q"));
                         list.add(new Tuple(pos1,n,"r"));
@@ -255,7 +255,7 @@ public class Piece {
 
             n = tab120.get(tab64.get(pos1)+9);
             if(n!=-1){
-                if(chess_t.get(n).color()=="WHITE" || chess_board.getEnPassant()==n){
+                if("WHITE".equals(chess_t.get(n).color()) || chess_board.getEnPassant()==n){
                     if(n>55){
                         list.add(new Tuple(pos1,n,"q"));
                         list.add(new Tuple(pos1,n,"r"));
@@ -271,7 +271,7 @@ public class Piece {
 
             n = tab120.get(tab64.get(pos1)+11);
             if(n!=-1){
-                if(chess_t.get(n).color()=="WHITE" || chess_board.getEnPassant()==n){
+                if("WHITE".equals(chess_t.get(n).color()) || chess_board.getEnPassant()==n){
                     if(n>55){
                         list.add(new Tuple(pos1,n,"q"));
                         list.add(new Tuple(pos1,n,"r"));
@@ -309,10 +309,6 @@ public class Piece {
                 }
             }
         }
-        // if(Attack)
-        // {
-        //      return list;
-        // }
 
         // String c = chess_board.oppositeColor(cAd);
 

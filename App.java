@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import chess.*;
+import java.lang.*;
 
 import api.API;
 
@@ -34,11 +35,17 @@ public class App {
 
             //Creation de l'arbre
             writeFile("Create Tree");
-            Tree arbre = new Tree(4, init, api_stdin.ImWhite(), new Tuple(0, 0, ""));
+            long begin_time = System.currentTimeMillis();
+            Tree arbre = new Tree(3, init, api_stdin.ImWhite(), new Tuple(0, 0, ""));
+            long end_time = System.currentTimeMillis() - begin_time;
+            writeFile("Time tree: " + end_time + "ms.");
 
             //devine le bon chemin
             writeFile("End tree, find max mov");
-            String moves = arbre.minimax(4, true).getThird();
+            begin_time = System.currentTimeMillis();
+            String moves = arbre.minimax(3, true).getThird();
+            end_time = System.currentTimeMillis() - begin_time;
+            writeFile("Time find move: "+ end_time + "ms.");
             writeFile("Moves: " + moves);
             String[] move_list = moves.split(" ");            
             api_stdin.moveSend(move_list[move_list.length-2]);
