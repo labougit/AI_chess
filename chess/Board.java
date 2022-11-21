@@ -180,28 +180,29 @@ public class Board{
         ArrayList<Tuple> moves = new ArrayList<Tuple>();
         // Init actual color
         // Consult each piece on the board
+        String Color_Adverse = "WHITE".equals(color)?"BLACK":"WHITE";
         for(Piece piece : values){
             if (piece.color != color){
                 // Do nothing if square color is not our
             }
             else if(piece.name == "KING"){
-                moves.addAll(piece.pos2_king(counter,"cAd",myChess,boolean_attack));
+                moves.addAll(piece.pos2_king(counter,Color_Adverse,myChess,boolean_attack));
             }
             else if(piece.name == "QUEEN"){
-                moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
-                moves.addAll(piece.pos2_bishop(counter,"cAd",myChess));
+                moves.addAll(piece.pos2_tower(counter,Color_Adverse,myChess));
+                moves.addAll(piece.pos2_bishop(counter,Color_Adverse,myChess));
             }
             else if(piece.name == "TOWER"){
-                moves.addAll(piece.pos2_tower(counter,"cAd",myChess));
+                moves.addAll(piece.pos2_tower(counter,Color_Adverse,myChess));
             }
             else if(piece.name == "KNIGHT"){
-                moves.addAll(piece.pos2_knight(counter,"cAd",myChess));
+                moves.addAll(piece.pos2_knight(counter,Color_Adverse,myChess));
             }
             else if(piece.name == "BISHOP"){
-                moves.addAll(piece.pos2_bishop(counter,"cAd",myChess));
+                moves.addAll(piece.pos2_bishop(counter,Color_Adverse,myChess));
             }
             else if(piece.name == "PAWN"){
-                moves.addAll(piece.pos2_pawn(counter,"cAd",myChess));
+                moves.addAll(piece.pos2_pawn(counter,Color_Adverse,myChess));
             }
             counter += 1;
         }
@@ -227,14 +228,14 @@ public class Board{
      * 
      */
     public void move_piece_without_check(String move) {
-        writeFile("move: " + move);
+        //writeFile("move: " + move);
 
         Tuple positions = convert_string_move_to_index(move);
 
-        writeFile("position: "+ String.valueOf(positions.getFirst()) + ":"+ String.valueOf(positions.getSecond()));
+        //writeFile("position: "+ String.valueOf(positions.getFirst()) + ":"+ String.valueOf(positions.getSecond()));
         
         Piece first_Pieces = values.get(positions.getFirst());
-        writeFile("Piece: " + first_Pieces.name + "from color: " + first_Pieces.color);
+        //writeFile("Piece: " + first_Pieces.name + "from color: " + first_Pieces.color);
         values.set(positions.getFirst(), new Piece());
         values.set(positions.getSecond(), first_Pieces);
     }
@@ -430,6 +431,7 @@ public class Board{
         list = getMoves(color,myChess, false);
         // Path of the position list, return true if one is equal to position in parameter
         for (Tuple move : list){
+            //writeFile("Move possible from the ennemy "+color+": "+this.getCoord(move.getFirst()).toString()+this.getCoord(move.getSecond()).toString());
             if(move.getSecond() == position){
                 return true;
             }
@@ -447,14 +449,13 @@ public class Board{
 
     // Determine the row from 0(a8-h8) to 7(a1-h1) of the position in parameter
     public Integer Row(Integer position){
-        int row = position % 8;
+        int row = position / 8;
         return row;
     }
 
     // Determine the column from 0 to 7 of the position in parameter
     public Integer Col(Integer position){
-        // fonction Erwan convert...
-        int row = position / 8;
+        int row = position % 8;
         return row;
     }
 

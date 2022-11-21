@@ -1,8 +1,11 @@
 package api;
 import java.util.*;
+import java.io.BufferedInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.*;
+import java.util.NoSuchElementException;
+import java.lang.IllegalStateException;
 
 
 public class Entree extends Thread {
@@ -46,6 +49,9 @@ public class Entree extends Thread {
 
         //Continue to send if it's not the bestmove
         writeFile("Go pass, wait bestmove");
+
+        //Check if any moves were send
+        checkIfMoves();
         
         
         
@@ -57,6 +63,9 @@ public class Entree extends Thread {
 
                 String[] array_moves = (line.substring(line.indexOf("moves")+5)).split(" ");
                 writeFile("Array_moves: "+line.substring(line.indexOf("moves")+5)+"\n");
+                if(array_moves.length>0) {
+                    array_moves = Arrays.copyOfRange(array_moves, 1, array_moves.length);
+                }
                 try {
                     this.queuePos.put(array_moves);
                 } catch (Exception e) {
@@ -81,25 +90,26 @@ public class Entree extends Thread {
 
     private void checkIfMoves() {
         String move;
-        if(this.queueMove.size() != 0) {
-            try {
-                move = this.queueMove.take();
-                writeFile("move: "+move);
-                System.out.println(move);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            writeFile("Take move...");
+            move = this.queueMove.take();
+            writeFile("move: "+move);
+            System.out.println(move);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void run() {
         Scanner scanner = new Scanner(System.in);
+        //BufferedInputStream buff = new BufferedInputStream(System.in);
         
         while(true) {
-            
-            if(scanner.hasNextLine()){
+            try {
+                writeFile("Beign nextLine, size buffered: ");
                 String inputString = scanner.nextLine();
-            
+                writeFile("End nextline");
+                
                 writeFile(inputString);
                 if("uci".equals(inputString)) {
                     inputUCI();
@@ -116,10 +126,12 @@ public class Entree extends Thread {
                 else if(inputString.length() == 4 && inputString.substring(0,4).matches("[a-h][0-9][a-h][0-9]"))
                 {
                     inputMove(inputString);
-                }
-            }
-            checkIfMoves();
-            
+                }    
+            } catch (NoSuchElementException e) {
+                writeFile("No line found");
+            } catch (IllegalStateException ill) {
+                writeFile("Scanner closed");
+            } 
         }
     }
 

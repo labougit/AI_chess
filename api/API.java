@@ -57,9 +57,17 @@ public class API {
     private Board updateEchiquier(String[] pos) {
 
         //Check if you're white or black
-        if(first) {
-            first = false;
-            this.White = pos.length == 0 ? true:false;
+        // if(first) {
+        //     first = false;
+        //     this.White = pos.length == 0 ? true:false;
+        // }
+
+
+        if(pos.length%2 == 0){
+            this.White = true;
+        }
+        else {
+            this.White = false;
         }
 
         String color = this.White ? "WHITE": "BLACK";
