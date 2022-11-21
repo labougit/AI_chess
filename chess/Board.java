@@ -22,8 +22,82 @@ public class Board{
         "a1","b1","c1","d1","e1","f1","g1","h1"
     ));
 
+    //square's score of piece
+    public final ArrayList<Float> s_bishop = new ArrayList<Float>(Arrays.asList(
+        -2.0f,-1.0f,-1.0f,-1.0f,-1.0f,-1.0f,-1.0f,-2.0f,
+        -1.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-1.0f,
+        -1.0f,0.0f,0.5f,1.0f,1.0f,0.5f,0.0f,-1.0f,       
+        -1.0f,0.5f,0.5f,1.0f,1.0f,0.5f,0.5f,-1.0f,
+        -1.0f, 0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,-1.0f,     
+        -1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,-1.0f,
+        -1.0f,0.5f,0.0f,0.0f,0.0f,0.0f,0.5f,-1.0f,
+        -2.0f,-1.0f,-1.0f,-1.0f,-1.0f,-1.0f,-1.0f,-2.0f));
+
+    public final ArrayList<Float> s_pawn = new ArrayList<Float>(Arrays.asList(
+        0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,
+        5.0f,5.0f,5.0f,5.0f,5.0f,5.0f,5.0f,5.0f,
+        1.0f,1.0f,2.0f,3.0f,3.0f,2.0f,1.0f,1.0f,       
+        0.5f,0.5f,1.0f,2.5f,2.5f,1.0f,0.5f,0.5f,
+        0.0f,0.0f,0.0f,2.0f,2.0f,0.0f,0.0f,0.0f,        
+        0.5f,-0.5f,-1.0f,0.0f,0.0f,-1.0f,-0.5f,0.5f,
+        0.0f,0.0f,0.0f,0.0f,-0.0f,0.0f,0.0f,0.0f));
+    
+    public final ArrayList<Float> s_tower = new ArrayList<Float>(Arrays.asList(
+        -0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,
+        0.5f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,0.5f,
+        -0.5f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-0.5f,       
+        -0.5f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-0.5f,
+        -0.5f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-0.5f,
+        -0.5f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-0.5f,        
+        -0.5f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-0.5f,
+        0.0f,0.0f,0.0f,0.5f,0.5f,0.0f,0.0f,0.0f));
+        
+    public final ArrayList<Float> s_knight = new ArrayList<Float>(Arrays.asList(
+        -5.0f,-4.0f,-3.0f,-3.0f,-3.0f,-3.0f,-4.0f,-5.0f,
+        -4.0f,-2.0f,0.0f,0.0f,0.0f,0.0f,-2.0f,-4.0f,
+        -3.0f,0.0f,1.0f,1.5f,1.5f,1.0f,0.0f,-3.0f,       
+        -3.0f,0.5f,1.5f,2.0f,2.0f,1.5f,0.5f,-3.0f,
+        -3.0f,0.0f,1.5f,2.0f,2.0f,1.5f,0.0f,-3.0f,
+        -3.0f,0.5f,1.0f,1.5f,1.5f,1.0f,0.5f,-3.0f,       
+        -4.0f,-2.0f,0.0f,0.5f,0.5f,0.0f,-2.0f,-4.0f,
+        -5.0f,-4.0f,-3.0f,-3.0f,-3.0f,-3.0f,-4.0f,-5.0f
+        ));
+
+    public final ArrayList<Float> s_king = new ArrayList<Float>(Arrays.asList(
+        -3.0f,-4.0f,-4.0f,-5.0f,-5.0f,-4.0f,-4.0f,-3.0f,
+        -3.0f,-4.0f,-4.0f,-5.0f,-5.0f,-4.0f,-4.0f,-3.0f,
+        -3.0f,-4.0f,-4.0f,-5.0f,-5.0f,-4.0f,-4.0f,-3.0f,       
+        -3.0f,-4.0f,-4.0f,-5.0f,-5.0f,-4.0f,-4.0f,-3.0f,
+        -2.0f,-3.0f,-3.0f,-4.0f,-4.0f,-3.0f,-3.0f,-2.0f,
+        -1.0f,-2.0f,-2.0f,-2.0f,-2.0f,-2.0f,-2.0f,-1.0f,       
+        2.0f,2.0f,0.0f,0.5f,0.5f,0.0f,2.0f,2.0f,
+        2.0f,3.0f,1.0f,0.0f,0.0f,1.0f,3.0f,2.0f
+        ));
+
+    public final ArrayList<Float> s_queen = new ArrayList<Float>(Arrays.asList(
+        -2.0f,-1.0f,-1.0f,-0.5f,-0.5f,-1.0f,-1.0f,-2.0f,
+        -1.0f,-0.0f,0.0f,0.0f,0.0f,0.0f,-0.0f,-1.0f,
+        -1.0f,0.0f,0.5f,0.5f,0.5f,0.5f,0.0f,-1.0f,       
+        -0.5f,0.0f,0.5f,0.5f,0.5f,0.5f,0.0f,-0.5f,
+        -0.0f,0.0f,0.5f,0.5f,0.5f,0.5f,0.0f,-0.5f,
+        -1.0f,0.5f,0.5f,0.5f,0.5f,0.5f,0.0f,-1.0f,       
+        -1.0f,-0.0f,0.5f,0.0f,0.0f,0.0f,0.0f,-1.0f,
+        -2.0f,-1.0f,-1.0f,-0.5f,-0.5f,-1.0f,-1.0f,-2.0f
+        ));
+    
+
     public void SetColor(String i_color) { color = i_color;}
     public String getColor() { return color; }
+
+    public void reverse_map(){
+        Collections.reverse(s_tower);
+        Collections.reverse(s_bishop);                
+        Collections.reverse(s_tower);
+        Collections.reverse(s_king);
+        Collections.reverse(s_queen);
+        Collections.reverse(s_pawn);
+        Collections.reverse(s_knight);
+    }
 
     public String getCoord(Integer pos)
     {
@@ -404,20 +478,69 @@ public class Board{
         return this.whiteCanCastling63;
     }
 
-    public Integer heuristic(){
-        int WhiteScore = 0;
-        int BlackScore = 0;
-
+    public Float heuristic(){
+        Float WhiteScore = 0.0f;
+        Float BlackScore = 0.0f;
+        int index;
+        Float score_piece=1.0f;
         for(int i = 0; i <this.getValues().size(); i++){
-            if(this.getValues().get(i).color()=="WHITE"){
-                    WhiteScore = WhiteScore + this.getValues().get(i).getVal();
+            if(this.getValues().get(i).color().equals("WHITE")){
+                    for (Piece piece: this.values) {
+                        index = this.values.indexOf(piece);
+                        if(piece.name().equals("TOWER")){
+                            score_piece = score_piece + s_tower.get(index);
+                        }
+                        if(piece.name().equals("QUEEN")){
+                            score_piece = score_piece + s_queen.get(index);
+                        }
+                        if(piece.name().equals("BISHOP")){
+                            score_piece = score_piece + s_bishop.get(index);
+                        }
+                        if(piece.name().equals("KING")){
+                            score_piece = score_piece + s_king.get(index);
+                        }
+                        if(piece.name().equals("PAWN")){
+                            score_piece = score_piece + s_pawn.get(index);
+                        }
+                        if(piece.name().equals("KNIGHT")){
+                            score_piece = score_piece + s_knight.get(index);
+                        }
+
+                        
+                    }
+                    WhiteScore = WhiteScore + this.getValues().get(i).getVal()*score_piece;
             }
             else{
-                    BlackScore = BlackScore + this.getValues().get(i).getVal();
+                this.reverse_map();
+                for (Piece piece: this.values) {
+                    index = this.values.indexOf(piece);
+                    if(piece.name().equals("TOWER")){
+                        score_piece = score_piece + s_tower.get(index);
+                    }
+                    if(piece.name().equals("QUEEN")){
+                        score_piece = score_piece + s_queen.get(index);
+                    }
+                    if(piece.name().equals("BISHOP")){
+                        score_piece = score_piece + s_bishop.get(index);
+                    }
+                    if(piece.name().equals("KING")){
+                        score_piece = score_piece + s_king.get(index);
+                    }
+                    if(piece.name().equals("PAWN")){
+                        score_piece = score_piece + s_pawn.get(index);
+                    }
+                    if(piece.name().equals("KNIGHT")){
+                        score_piece = score_piece + s_knight.get(index);
+                    }
+
+                    
+                }
+                this.reverse_map();
+                    BlackScore = BlackScore + this.getValues().get(i).getVal()*score_piece;
 
             }
         }
-        if(this.getColor() == "WHITE"){return WhiteScore-BlackScore;}
+        if(this.getColor().equals("WHITE")){return WhiteScore-BlackScore;}
         else{return BlackScore - WhiteScore;}
     }
 
