@@ -2,11 +2,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import chess.*;
+import java.util.*;
 import java.lang.*;
+import java.util.Collections;
 
 import api.API;
 
 public class App {
+
+    //attribute
+    public static ArrayList<String> moves_preced = new ArrayList<String>();
 
     private static void writeFile(String line) {
         try {
@@ -31,7 +36,7 @@ public class App {
 
             String color = api_stdin.ImWhite()?"WHITE": "BLACK";
             String color_ennemy = api_stdin.ImWhite()?"BLACK":"WHITE";
-            writeFile("Color of our king: "+color+" King is checked: "+init.isChecked(color, color, init));
+             writeFile("Color of our king: "+color+" King is checked: "+ init.isChecked());
 
             //Creation de l'arbre
             writeFile("Create Tree");
@@ -43,14 +48,26 @@ public class App {
             //devine le bon chemin
             writeFile("End tree, find max mov");
             begin_time = System.currentTimeMillis();
-            String moves = arbre.minimax(3, true).getThird();
+            String moves = arbre.minimax(3, true).getThird(); //first minimax
+            String[] move_list = moves.split(" ");  
+            // 3 fold repetition
+            moves_preced.add(move_list[move_list.length-2]);
+            //writeFile("fréquence : " + Collections.frequency(moves_preced, moves));
+            if ( Collections.frequency(moves_preced, move_list[move_list.length-2])==2){
+                // moves_preced.clear();
+                arbre.destroyNode(move_list[move_list.length-2]);
+                //writeFile("moves précedent : " + move_list[move_list.length-2]);
+                moves = arbre.minimax(3, true).getThird(); //second minimax
+                move_list = moves.split(" ");       
+                moves_preced.add(move_list[move_list.length-2]);     
+                
+            }
             end_time = System.currentTimeMillis() - begin_time;
-            writeFile("Time find move: "+ end_time + "ms.");
-            writeFile("Moves: " + moves);
-            String[] move_list = moves.split(" ");            
+            //writeFile("Time find move: "+ end_time + "ms.");
+            //writeFile("Moves: " + moves);
             api_stdin.moveSend(move_list[move_list.length-2]);
-
-
+            writeFile(moves_preced.toString());
+            
         }
 
     }

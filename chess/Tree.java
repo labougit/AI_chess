@@ -13,6 +13,7 @@ public class Tree{
     ArrayList<Tree> children = new ArrayList<Tree>();
     Board chess_node;
     Tree node_f;
+    
 
     String color_m, color_f;
 
@@ -38,45 +39,72 @@ public class Tree{
         }
         if(profondeur!=0){
             //création des noeuds fils
-            ArrayList<Tuple> all_move = chess.getMoves(color_m,chess_node,false);
-            for (Tuple move : all_move){
-                Integer pos_1 = move.getFirst(); //pos initial
-                Integer pos_2 = move.getSecond(); //pos final
-                Board chess_copy = new Board(chess); //copi board
-                writeFile("Moves: "+chess_copy.getCoord(pos_1).toString()+chess_copy.getCoord(pos_2).toString());
-                chess_copy.move_piece_without_check(chess_copy.getCoord(pos_1).toString()+chess_copy.getCoord(pos_2).toString()); //met à jour le board         
-                node_f = new Tree(profondeur-1,chess_copy,!i_color_adv, move); //noeud fils
-                children.add(node_f); //ajout dans la liste de noeud fils
-            }
+            ArrayList<Tuple> all_move = chess.getMoves(color_m,chess_node,chess.isChecked());
+                for (Tuple move : all_move){
+                    Integer pos_1 = move.getFirst(); //pos initial
+                    Integer pos_2 = move.getSecond(); //pos final
+                    Board chess_copy = new Board(chess); //copi board
+                    //writeFile("Moves: "+chess_copy.getCoord(pos_1).toString()+chess_copy.getCoord(pos_2).toString());
+                    chess_copy.move_piece_without_check(chess_copy.getCoord(pos_1).toString()+chess_copy.getCoord(pos_2).toString());
+                    node_f = new Tree(profondeur-1,chess_copy,!i_color_adv, move); //noeud fils
+                    children.add(node_f); //ajout dans la liste de noeud fils
+                    
+                }
         }
     }
     
-    public Tuple minimax(int profondeur, boolean evalMax){
-        ArrayList<Integer> liste = new ArrayList<>();
+    
+    public void destroyNode(String move) {
+        String move_pr = chess_node.getCoord(this.moveObj.getFirst()).toString()+chess_node.getCoord(this.moveObj.getSecond()).toString();
+        if(move_pr.equals(move)){
+            String color = chess_node.getColor();
+            chess_node = new Board();
+            chess_node.SetColor(color);
+            this.children.clear(); //vide les fils
+
+
+        }
+        else{
+            for (Tree tree : children) {
+                tree.destroyNode(move);
+            }
+        }
+
+    }
+    public Tuple_float minimax(int profondeur, boolean evalMax){
+        ArrayList<Float> liste = new ArrayList<>();
         ArrayList<String> liste_move = new ArrayList<>();
-        Tuple result = new Tuple(-1, -1, "");
+        Tuple_float result = new Tuple_float(-1.0f, -1, "");
         
-        if(profondeur == 0){
+        if(profondeur == 0 || (chess_node.getValues() == null && children.size()==0)){
             // writeFile("This node is the racine ?: " + !(racine!=this) + " Is our king is checked ?" + chess_node.isChecked(MyColor, MyColor, chess_node));
-            // writeFile("Color of the Chess ?: "+chess_node.getColor()+"Heuristic?: "+chess_node.heuristic());
-            // writeFile("Move: " + chess_node.getCoord(this.moveObj.getFirst()).toString()+chess_node.getCoord(this.moveObj.getSecond()).toString());
+            // if(chess_node.getValues() != null){
+                 //writeFile("Move: " + chess_node.getCoord(this.moveObj.getFirst()).toString()+chess_node.getCoord(this.moveObj.getSecond()).toString());
+             // writeFile("Color of the Chess ?: "+chess_node.getColor()+"Heuristic?: "+chess_node.heuristic());
+            // // }
+            if(chess_node.getValues() == null){
+                return new Tuple_float(0.0f, -1, "");
+            }
             result.setFirst(chess_node.heuristic());
             result.setThird(chess_node.getCoord(this.moveObj.getFirst()).toString()+chess_node.getCoord(this.moveObj.getSecond()).toString());
             return result;
         } else{
             for(Tree child: children){
-                Tuple tmp = child.minimax(profondeur-1, !evalMax);
-                liste.add(tmp.getFirst());
-                liste_move.add(tmp.getThird());
+                Tuple_float tmp = child.minimax(profondeur-1, !evalMax);
+                if(!tmp.getThird().equals("")){ 
+                    liste.add(tmp.getFirst());
+                    liste_move.add(tmp.getThird());}
+                
             }
+            
             if(evalMax){
-                int i = Collections.max(liste);
+                Float i = Collections.max(liste);
                 String move_one = liste_move.get(liste.indexOf(i)) + " " + chess_node.getCoord(this.moveObj.getFirst()).toString()+chess_node.getCoord(this.moveObj.getSecond()).toString();
-                return new Tuple(i, -1, move_one);
+                return new Tuple_float(i, -1, move_one);
             } else {
-                int i = Collections.min(liste);
+                Float i = Collections.min(liste);
                 String move_one = liste_move.get(liste.indexOf(i)) + " " + chess_node.getCoord(this.moveObj.getFirst()).toString()+chess_node.getCoord(this.moveObj.getSecond()).toString();
-                return new Tuple(i, -1, move_one);
+                return new Tuple_float(i, -1, move_one);
             }
         }
     }

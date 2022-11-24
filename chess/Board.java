@@ -2,6 +2,7 @@ package chess;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.Collections;
 // chess package to use new Piece.java methods
 import chess.*;
 import chess.Tuple;
@@ -11,7 +12,7 @@ public class Board{
     // Define the next color to play 
     // Init the 8x8 chess board ArrayList object
     public String color;
-    public final ArrayList<String> coord = new ArrayList<String>(Arrays.asList(
+    public static ArrayList<String> coord = new ArrayList<String>(Arrays.asList(
         "a8","b8","c8","d8","e8","f8","g8","h8",
         "a7","b7","c7","d7","e7","f7","g7","h7",
         "a6","b6","c6","d6","e6","f6","g6","h6",
@@ -23,82 +24,135 @@ public class Board{
     ));
 
     //square's score of piece
-    public final ArrayList<Float> s_bishop = new ArrayList<Float>(Arrays.asList(
-        -2.0f,-1.0f,-1.0f,-1.0f,-1.0f,-1.0f,-1.0f,-2.0f,
-        -1.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-1.0f,
-        -1.0f,0.0f,0.5f,1.0f,1.0f,0.5f,0.0f,-1.0f,       
-        -1.0f,0.5f,0.5f,1.0f,1.0f,0.5f,0.5f,-1.0f,
-        -1.0f, 0.0f,1.0f,1.0f,1.0f,1.0f,0.0f,-1.0f,     
-        -1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,-1.0f,
-        -1.0f,0.5f,0.0f,0.0f,0.0f,0.0f,0.5f,-1.0f,
-        -2.0f,-1.0f,-1.0f,-1.0f,-1.0f,-1.0f,-1.0f,-2.0f));
+    public static ArrayList<Float> s_bishop_w = new ArrayList<Float>(Arrays.asList(
+        -20f,-10f,-10f,-10f,-10f,-10f,-10f,-20f,
+        -10f, 0f, 0f, 0f, 0f, 0f, 0f, -10f,
+        -10f, 0f, 5f, 10f, 10f, 5f, 0f, -10f,
+        -10f, 5f, 5f, 10f, 10f, 5f, 5f, -10f,
+        -10f, 0f, 10f, 10f, 10f, 10f, 0f, -10f,
+        -10f, 10f, 10f, 10f, 10f, 10f, 10f, -10f,
+        -10f, 5f, 0f, 0f, 0f, 0f, 5f, -10f,
+        -20f,-10f,-10f,-10f,-10f,-10f,-10f,-20f));
 
-    public final ArrayList<Float> s_pawn = new ArrayList<Float>(Arrays.asList(
-        0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,
-        5.0f,5.0f,5.0f,5.0f,5.0f,5.0f,5.0f,5.0f,
-        1.0f,1.0f,2.0f,3.0f,3.0f,2.0f,1.0f,1.0f,       
-        0.5f,0.5f,1.0f,2.5f,2.5f,1.0f,0.5f,0.5f,
-        0.0f,0.0f,0.0f,2.0f,2.0f,0.0f,0.0f,0.0f,        
-        0.5f,-0.5f,-1.0f,0.0f,0.0f,-1.0f,-0.5f,0.5f,
-        0.0f,0.0f,0.0f,0.0f,-0.0f,0.0f,0.0f,0.0f));
+    public static ArrayList<Float> s_bishop_b = new ArrayList<Float>(Arrays.asList(
+        -20f, -10f, -10f, -10f, -10f, -10f, -10f,
+         -20f, -10f, 5f, 0f, 0f, 0f, 0f, 5f, -10f, 
+         -10f, 10f, 10f, 10f, 10f, 10f, 10f, -10f, 
+         -10f, 0f, 10f, 10f, 10f, 10f, 0f, -10f, -10f,
+          5f, 5f, 10f, 10f, 5f, 5f, -10f, -10f, 0f, 5f,
+           10f, 10f, 5f, 0f, -10f, -10f, 0f, 0f, 0f, 0f,
+            0f, 0f, -10f, -20f, -10f, -10f, -10f, -10f, -10f, -10f, -20f
+    ));
+    public static ArrayList<Float> s_pawn_w = new ArrayList<Float>(Arrays.asList(
+        0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,
+50f, 50f, 50f, 50f, 50f, 50f, 50f, 50f,
+10f, 10f, 20f, 30f, 30f, 20f, 10f, 10f,
+ 5f, 5f, 10f, 25f, 25f, 10f, 5f, 5f,
+ 0f, 0f, 0f, 20f, 20f, 0f, 0f, 0f,
+ 5f, -5f, -10f, 0f, 0f, -10f, -5f, 5f,
+ 5f, 10f, 10f,-20f,-20f, 10f, 10f, 5f,
+ 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f));
+
+        public static ArrayList<Float> s_pawn_b = new ArrayList<Float>(Arrays.asList(
+            0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,
+             5f, 10f, 10f, -20f, -20f, 10f,
+              10f, 5f, 5f, -5f, -10f, 0f, 0f, 
+              -10f, -5f, 5f, 0f, 0f, 0f, 20f, 20f,
+               0f, 0f, 0f, 5f, 5f, 10f, 25f, 25f, 
+               10f, 5f, 5f, 10f, 10f, 20f, 30f, 30f, 
+               20f, 10f, 10f, 50f, 50f, 50f, 50f, 
+               50f, 50f, 50f, 50f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f));
     
-    public final ArrayList<Float> s_tower = new ArrayList<Float>(Arrays.asList(
-        -0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,
-        0.5f,1.0f,1.0f,1.0f,1.0f,1.0f,1.0f,0.5f,
-        -0.5f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-0.5f,       
-        -0.5f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-0.5f,
-        -0.5f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-0.5f,
-        -0.5f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-0.5f,        
-        -0.5f,0.0f,0.0f,0.0f,0.0f,0.0f,0.0f,-0.5f,
-        0.0f,0.0f,0.0f,0.5f,0.5f,0.0f,0.0f,0.0f));
+    public static ArrayList<Float> s_tower_w = new ArrayList<Float>(Arrays.asList(
+        0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f,
+  5f, 10f, 10f, 10f, 10f, 10f, 10f, 5f,
+ -5f, 0f, 0f, 0f, 0f, 0f, 0f, -5f,
+ -5f, 0f, 0f, 0f, 0f, 0f, 0f, -5f,
+ -5f, 0f, 0f, 0f, 0f, 0f, 0f, -5f,
+ -5f, 0f, 0f, 0f, 0f, 0f, 0f, -5f,
+ -5f, 0f, 0f, 0f, 0f, 0f, 0f, -5f,
+  0f, 0f, 0f, 5f, 5f, 0f, 0f, 0f));
+
+           public static ArrayList<Float> s_tower_b = new ArrayList<Float>(Arrays.asList(
+            0f, 0f, 0f, 5f, 5f, 0f, 0f, 0f,
+             -5f, 0f, 0f, 0f, 0f, 0f, 0f, -5f, -5f,
+              0f, 0f, 0f, 0f, 0f, 0f, -5f, -5f, 0f,
+               0f, 0f, 0f, 0f, 0f, -5f, -5f, 0f, 0f, 
+               0f, 0f, 0f, 0f, -5f, -5f, 0f, 0f, 0f, 
+               0f, 0f, 0f, -5f, 5f, 10f, 10f, 10f, 10f, 
+               10f, 10f, 5f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f));
         
-    public final ArrayList<Float> s_knight = new ArrayList<Float>(Arrays.asList(
-        -5.0f,-4.0f,-3.0f,-3.0f,-3.0f,-3.0f,-4.0f,-5.0f,
-        -4.0f,-2.0f,0.0f,0.0f,0.0f,0.0f,-2.0f,-4.0f,
-        -3.0f,0.0f,1.0f,1.5f,1.5f,1.0f,0.0f,-3.0f,       
-        -3.0f,0.5f,1.5f,2.0f,2.0f,1.5f,0.5f,-3.0f,
-        -3.0f,0.0f,1.5f,2.0f,2.0f,1.5f,0.0f,-3.0f,
-        -3.0f,0.5f,1.0f,1.5f,1.5f,1.0f,0.5f,-3.0f,       
-        -4.0f,-2.0f,0.0f,0.5f,0.5f,0.0f,-2.0f,-4.0f,
-        -5.0f,-4.0f,-3.0f,-3.0f,-3.0f,-3.0f,-4.0f,-5.0f
+    public static ArrayList<Float> s_knight_w = new ArrayList<Float>(Arrays.asList(
+        -50f,-40f,-30f,-30f,-30f,-30f,-40f,-50f,
+    -40f,-20f, 0f, 0f, 0f, 0f,-20f,-40f,
+    -30f, 0f, 10f, 15f, 15f, 10f, 0f, -30f,
+    -30f, 5f, 15f, 20f, 20f, 15f, 5f, -30f,
+    -30f, 0f, 15f, 20f, 20f, 15f, 0f, -30f,
+    -30f, 5f, 10f, 15f, 15f, 10f, 5f, -30f,
+    - 40f,-20f, 0f, 5f, 5f, 0f,-20f,-40f,
+    -50f,-40f,-30f,-30f,-30f,-30f,-40f,-50f
+        ));
+        public static ArrayList<Float> s_knight_b = new ArrayList<Float>(Arrays.asList(
+            -50f, -40f, -30f, -30f, -30f, -30f,-40f, -50f,
+             -40f, -20f, 0f, 5f, 5f, 0f, -20f, -40f, 
+             -30f, 5f, 10f, 15f, 15f, 10f, 5f, -30f, -30f, 0f, 15f, 20f,
+             20f, 15f, 0f, -30f, -30f, 5f, 15f, 20f, 
+             20f, 15f, 5f, -30f, -30f, 0f, 10f, 15f, 
+             15f, 10f, 0f, -30f, -40f, -20f, 0f, 0f, 
+             0f, 0f, -20f, -40f, -50f, -40f, -30f, 
+             -30f, -30f, -30f, -40f, -50f
+            ));
+
+    public static ArrayList<Float> s_king_w = new ArrayList<Float>(Arrays.asList(
+        -30f,-40f,-40f,-50f,-50f,-40f,-40f,-30f,
+-30f,-40f,-40f,-50f,-50f,-40f,-40f,-30f,
+-30f,-40f,-40f,-50f,-50f,-40f,-40f,-30f,
+-30f,-40f,-40f,-50f,-50f,-40f,-40f,-30f,
+-20f,-30f,-30f,-40f,-40f,-30f,-30f,-20f,
+-10f,-20f,-20f,-20f,-20f,-20f,-20f,-10f,
+ 20f, 20f, 0f, 0f, 0f, 0f, 20f, 20f,
+ 20f, 30f, 10f, 0f, 0f, 10f, 30f, 20f
         ));
 
-    public final ArrayList<Float> s_king = new ArrayList<Float>(Arrays.asList(
-        -3.0f,-4.0f,-4.0f,-5.0f,-5.0f,-4.0f,-4.0f,-3.0f,
-        -3.0f,-4.0f,-4.0f,-5.0f,-5.0f,-4.0f,-4.0f,-3.0f,
-        -3.0f,-4.0f,-4.0f,-5.0f,-5.0f,-4.0f,-4.0f,-3.0f,       
-        -3.0f,-4.0f,-4.0f,-5.0f,-5.0f,-4.0f,-4.0f,-3.0f,
-        -2.0f,-3.0f,-3.0f,-4.0f,-4.0f,-3.0f,-3.0f,-2.0f,
-        -1.0f,-2.0f,-2.0f,-2.0f,-2.0f,-2.0f,-2.0f,-1.0f,       
-        2.0f,2.0f,0.0f,0.5f,0.5f,0.0f,2.0f,2.0f,
-        2.0f,3.0f,1.0f,0.0f,0.0f,1.0f,3.0f,2.0f
-        ));
-
-    public final ArrayList<Float> s_queen = new ArrayList<Float>(Arrays.asList(
-        -2.0f,-1.0f,-1.0f,-0.5f,-0.5f,-1.0f,-1.0f,-2.0f,
-        -1.0f,-0.0f,0.0f,0.0f,0.0f,0.0f,-0.0f,-1.0f,
-        -1.0f,0.0f,0.5f,0.5f,0.5f,0.5f,0.0f,-1.0f,       
-        -0.5f,0.0f,0.5f,0.5f,0.5f,0.5f,0.0f,-0.5f,
-        -0.0f,0.0f,0.5f,0.5f,0.5f,0.5f,0.0f,-0.5f,
-        -1.0f,0.5f,0.5f,0.5f,0.5f,0.5f,0.0f,-1.0f,       
-        -1.0f,-0.0f,0.5f,0.0f,0.0f,0.0f,0.0f,-1.0f,
-        -2.0f,-1.0f,-1.0f,-0.5f,-0.5f,-1.0f,-1.0f,-2.0f
-        ));
+        public static ArrayList<Float> s_king_b = new ArrayList<Float>(Arrays.asList(
+            20f, 30f, 10f, 0f, 0f, 10f, 30f, 
+            20f, 20f, 20f, 0f, 0f, 0f, 0f, 20f, 20f,
+             -10f, -20f, -20f, -20f, -20f, -20f, 
+             -20f, -10f, -20f, -30f, -30f, -40f, 
+             -40f, -30f, -30f, -20f, -30f, -40f, 
+             -40f, -50f, -50f, -40f, -40f, -30f, 
+             -30f, -40f, -40f, -50f, -50f, -40f, 
+             -40f, -30f, -30f, -40f, -40f, -50f, 
+             -50f, -40f, -40f, -30f, -30f, -40f, 
+             -40f, -50f, -50f, -40f, -40f, -30f
+            ));
     
+    public static ArrayList<Float> s_queen_w = new ArrayList<Float>(Arrays.asList(
+        -20f,-10f,-10f, -5f, -5f,-10f,-10f,-20f,
+-10f, 0f, 0f, 0f, 0f, 0f, 0f, -10f,
+-10f, 0f, 5f, 5f, 5f, 5f, 0f, -10f,
+ -5f, 0f, 5f, 5f, 5f, 5f, 0f, -5f,
+  0f, 0f, 5f, 5f, 5f, 5f, 0f, -5f,
+-10f, 5f, 5f, 5f, 5f, 5f, 0f, -10f,
+-10f, 0f, 5f, 0f, 0f, 0f, 0f, -10f,
+-20f,-10f,-10f, -5f, -5f,-10f,-10f,-20f
+        ));
+
+        public static ArrayList<Float> s_queen_b = new ArrayList<Float>(Arrays.asList(
+            -20f, -10f, -10f, -5f, -5f, -10f, -10f,
+             -20f, -10f, 0f, 0f, 0f, 0f, 5f, 0f, 
+             -10f, -10f, 0f, 5f, 5f, 5f, 5f, 5f, 
+             -10f, -5f, 0f, 5f, 5f, 5f, 5f, 0f, 0f, 
+             -5f, 0f, 5f, 5f, 5f, 5f, 0f, -5f, -10f,
+              0f, 5f, 5f, 5f, 5f, 0f, -10f, -10f, 0f,
+               0f, 0f, 0f, 0f, 0f, -10f, -20f, -10f,
+                -10f, -5f, -5f, -10f, -10f, -20f));
 
     public void SetColor(String i_color) { color = i_color;}
     public String getColor() { return color; }
 
-    public void reverse_map(){
-        Collections.reverse(s_tower);
-        Collections.reverse(s_bishop);                
-        Collections.reverse(s_tower);
-        Collections.reverse(s_king);
-        Collections.reverse(s_queen);
-        Collections.reverse(s_pawn);
-        Collections.reverse(s_knight);
-    }
-
+ 
+  
     public String getCoord(Integer pos)
     {
         return coord.get(pos);
@@ -139,16 +193,31 @@ public class Board{
         blackCanCastling7 = true;
         this.SetColor(i_color);
     }
-    
+
+    public Board(){
+        values = null;
+            int enPassant = -1;
+
+        // Castling rights
+        whiteCanCastling56 = false;
+        whiteCanCastling63 = false;
+        blackCanCastling0 = false;
+        blackCanCastling7 = false;
+
+
+    }
+
+   
+
     public Board(Board i_board){
         values = new ArrayList<Piece>(i_board.getValues());
         int enPassant = -1;
 
         // Castling rights
-        whiteCanCastling56 = true;
-        whiteCanCastling63 = true;
-        blackCanCastling0 = true;
-        blackCanCastling7 = true;
+        whiteCanCastling56 = i_board.whiteCanCastling56;
+        whiteCanCastling63 = i_board.whiteCanCastling63;
+        blackCanCastling0 = i_board.blackCanCastling0;
+        blackCanCastling7 = i_board.blackCanCastling7;
         this.SetColor(i_board.getColor());
 
     }
@@ -182,27 +251,40 @@ public class Board{
         // Consult each piece on the board
         String Color_Adverse = "WHITE".equals(color)?"BLACK":"WHITE";
         for(Piece piece : values){
-            if (piece.color != color){
+            if (!piece.color.equals(color)){
                 // Do nothing if square color is not our
             }
-            else if(piece.name == "KING"){
-                moves.addAll(piece.pos2_king(counter,Color_Adverse,myChess,boolean_attack));
+            
+            else if(piece.name.equals("KING") && boolean_attack){
+                moves.addAll(piece.pos2_king_1(counter,Color_Adverse,myChess,this.isChecked()));
+                writeFile("king moves: " + piece.pos2_king_1(counter,Color_Adverse,myChess,this.isChecked()));
+                
             }
-            else if(piece.name == "QUEEN"){
+            else if(piece.name.equals("KING")){
+                moves.addAll(piece.pos2_king_2(counter,Color_Adverse,myChess));
+                //writeFile("king moves: " + piece.pos2_king(counter,Color_Adverse,myChess,this.isChecked()));
+                
+            }
+            else if(piece.name.equals("QUEEN")){
                 moves.addAll(piece.pos2_tower(counter,Color_Adverse,myChess));
                 moves.addAll(piece.pos2_bishop(counter,Color_Adverse,myChess));
             }
-            else if(piece.name == "TOWER"){
+             else if(piece.name.equals("TOWER")){
+            //     if(!boolean_attack){
+            //         writeFile("Tower called: " + piece.pos2_tower(counter,Color_Adverse,myChess));
+            //     }
                 moves.addAll(piece.pos2_tower(counter,Color_Adverse,myChess));
             }
-            else if(piece.name == "KNIGHT"){
+            else if(piece.name.equals("KNIGHT")){
                 moves.addAll(piece.pos2_knight(counter,Color_Adverse,myChess));
             }
-            else if(piece.name == "BISHOP"){
+            else if(piece.name.equals("BISHOP")){
                 moves.addAll(piece.pos2_bishop(counter,Color_Adverse,myChess));
             }
-            else if(piece.name == "PAWN"){
+            else if(piece.name.equals("PAWN")){
                 moves.addAll(piece.pos2_pawn(counter,Color_Adverse,myChess));
+                //writeFile("pawn moves: " + piece.pos2_pawn(counter,Color_Adverse,myChess));
+
             }
             counter += 1;
         }
@@ -228,9 +310,31 @@ public class Board{
      * 
      */
     public void move_piece_without_check(String move) {
+        Tuple positions = convert_string_move_to_index(move);
+
+        if(this.getValues().get(4).name().equals("KING") && move.equals("e8g8")){
+            Piece tmp_p = values.get(7);
+            values.set(7, new Piece());
+            values.set(5,tmp_p);
+        }
+        else if(this.getValues().get(4).name().equals("KING") && move.equals("e8b8")){
+            Piece tmp_p = values.get(0);
+            values.set(0, new Piece());
+            values.set(2,tmp_p);
+        }
+        else if(this.getValues().get(60).name().equals("KING") && move.equals("e1g1")){
+            Piece tmp_p = values.get(63);
+            values.set(63, new Piece());
+            values.set(61,tmp_p);
+        }
+        else if(this.getValues().get(60).name().equals("KING") && move.equals("e1b1")){
+            Piece tmp_p = values.get(56);
+            values.set(56, new Piece());
+            values.set(58,tmp_p);
+        }
         //writeFile("move: " + move);
 
-        Tuple positions = convert_string_move_to_index(move);
+        
 
         //writeFile("position: "+ String.valueOf(positions.getFirst()) + ":"+ String.valueOf(positions.getSecond()));
         
@@ -397,9 +501,9 @@ public class Board{
             }
         }
         // King in check, game over
-        if (!isChecked(color, oppositeColor(colorToPlay), myChess)){
-            return false;
-        }
+        // if (!isChecked(color, oppositeColor(colorToPlay), myChess)){
+        //     return false;
+        // }
         return true;
     }
     /** Determine if the king of the given color is in check
@@ -408,17 +512,17 @@ public class Board{
      * @param myChess the latest version of the board composition 
      * @return true if the king is in check, if not false
      */
-    public Boolean isChecked(String color, String colorToPlay, Board myChess){
-        int position = 0;
-        // Find the king in the board
-        for (int i = 1; i < 64; i++){
-            if (this.values.get(i).name == "KING" && this.values.get(i).color == colorToPlay){
-                position = i;
-                break;
-            }
-        }
-        return isAttacked(position, oppositeColor(color), myChess);
-    }
+    public Boolean isChecked(){
+         int position = 0;
+         // Find the king in the board
+         for (int i = 1; i < 64; i++){
+             if (this.values.get(i).name == "KING" && this.values.get(i).color == this.getColor()){
+                 position = i;
+                 break;
+             }
+         }
+         return isAttacked(position);
+     }
 
     /** Determine if square at the position in parameter is a destination for the color in parameter
      * Function used for in check and castle moves
@@ -426,18 +530,20 @@ public class Board{
      * @param color of the piece
      * @return true if the destination is accepted, if not false
      */
-    public Boolean isAttacked(int position, String color, Board myChess){
-        ArrayList<Tuple> list = new ArrayList<>();
-        list = getMoves(color,myChess, false);
-        // Path of the position list, return true if one is equal to position in parameter
-        for (Tuple move : list){
-            //writeFile("Move possible from the ennemy "+color+": "+this.getCoord(move.getFirst()).toString()+this.getCoord(move.getSecond()).toString());
-            if(move.getSecond() == position){
-                return true;
-            }
-        }
-        return false;
-    }
+     public Boolean isAttacked(int position){
+          ArrayList<Tuple> list = new ArrayList<>();
+
+          list = getMoves(oppositeColor(color),this, false);
+          // Path of the position list, return true if one is equal to position in parameter
+          for (Tuple move : list){
+            //writeFile("Position of our king: " + position);
+            //writeFile("Move possible from the "+color+": "+this.getCoord(move.getFirst()).toString()+this.getCoord(move.getSecond()).toString());
+              if(move.getSecond() == position){
+                  return true;
+              }
+          }
+          return false;
+      }
 
     // Determine the opposite color in parameter
     public String oppositeColor(String color){
@@ -472,7 +578,7 @@ public class Board{
     }
 
     public Boolean getWhiteCanCastling56(){
-        return this.whiteCanCastling63;
+        return this.whiteCanCastling56;
     }
 
     public Boolean getWhiteCanCastling63(){
@@ -482,62 +588,60 @@ public class Board{
     public Float heuristic(){
         Float WhiteScore = 0.0f;
         Float BlackScore = 0.0f;
-        int index;
-        Float score_piece=1.0f;
+        Float score_piece=0.0f;
         for(int i = 0; i <this.getValues().size(); i++){
+            Integer val = this.getValues().get(i).getVal(this.color);
             if(this.getValues().get(i).color().equals("WHITE")){
-                    for (Piece piece: this.values) {
-                        index = this.values.indexOf(piece);
-                        if(piece.name().equals("TOWER")){
-                            score_piece = score_piece + s_tower.get(index);
+                        if(this.getValues().get(i).name().equals("TOWER")){
+                            score_piece =val+s_tower_w.get(i);
                         }
-                        if(piece.name().equals("QUEEN")){
-                            score_piece = score_piece + s_queen.get(index);
+                        else if(getValues().get(i).name().equals("QUEEN")){
+                            score_piece=val+s_queen_w.get(i);
                         }
-                        if(piece.name().equals("BISHOP")){
-                            score_piece = score_piece + s_bishop.get(index);
+                        else if(getValues().get(i).name().equals("BISHOP")){
+                            score_piece=val+s_bishop_w.get(i);
                         }
-                        if(piece.name().equals("KING")){
-                            score_piece = score_piece + s_king.get(index);
+                        else if(getValues().get(i).name().equals("KING")){
+                            score_piece=(float)val + s_king_w.get(i);
                         }
-                        if(piece.name().equals("PAWN")){
-                            score_piece = score_piece + s_pawn.get(index);
+                        else if(getValues().get(i).name().equals("PAWN")){
+                            score_piece=val+s_pawn_w.get(i);
                         }
-                        if(piece.name().equals("KNIGHT")){
-                            score_piece = score_piece + s_knight.get(index);
+                        else if(getValues().get(i).name().equals("KNIGHT")){
+                            score_piece=val+s_knight_w.get(i);
                         }
 
                         
-                    }
-                    WhiteScore = WhiteScore + this.getValues().get(i).getVal()*score_piece;
+                    
+                    WhiteScore = WhiteScore +  score_piece;
+                    score_piece = 0.0f;
             }
             else{
-                this.reverse_map();
-                for (Piece piece: this.values) {
-                    index = this.values.indexOf(piece);
-                    if(piece.name().equals("TOWER")){
-                        score_piece = score_piece + s_tower.get(index);
+
+                    if(getValues().get(i).name().equals("TOWER")){
+                        score_piece =val+s_tower_b.get(i);
                     }
-                    if(piece.name().equals("QUEEN")){
-                        score_piece = score_piece + s_queen.get(index);
+                    else if(getValues().get(i).name().equals("QUEEN")){
+                        score_piece =val +s_queen_b.get(i);
                     }
-                    if(piece.name().equals("BISHOP")){
-                        score_piece = score_piece + s_bishop.get(index);
+                    else if(getValues().get(i).name().equals("BISHOP")){
+                        score_piece =val+s_bishop_b.get(i);
                     }
-                    if(piece.name().equals("KING")){
-                        score_piece = score_piece + s_king.get(index);
+                    else if(getValues().get(i).name().equals("KING")){
+                        score_piece =(float)val + s_king_b.get(i);
                     }
-                    if(piece.name().equals("PAWN")){
-                        score_piece = score_piece + s_pawn.get(index);
+                    else if(getValues().get(i).name().equals("PAWN")){
+                        score_piece =val+s_pawn_b.get(i);
                     }
-                    if(piece.name().equals("KNIGHT")){
-                        score_piece = score_piece + s_knight.get(index);
+                    else if(getValues().get(i).name().equals("KNIGHT")){
+                        score_piece =val+s_knight_b.get(i);
                     }
 
                     
-                }
-                this.reverse_map();
-                    BlackScore = BlackScore + this.getValues().get(i).getVal()*score_piece;
+                
+                    BlackScore = BlackScore +score_piece;
+                    score_piece = 0.0f;
+
 
             }
         }
@@ -550,9 +654,9 @@ public class Board{
         String color = "WHITE";
         ArrayList<Tuple> all_move = myChess.getMoves(color,myChess, false);
         Integer a = all_move.get(0).getFirst();
-        System.out.println(all_move.get(0).getFirst().toString());
-        System.out.println(myChess.getCoord(all_move.get(0).getFirst()).toString());
-        System.out.println(myChess.Col(63));
+        //System.out.println(all_move.get(0).getFirst().toString());
+        //System.out.println(myChess.getCoord(all_move.get(0).getFirst()).toString());
+       
     }
 }
 

@@ -1,19 +1,19 @@
 package chess;
 
-public class Tuple {
+public class Tuple_float {
     
-    public Integer a;
+    public Float a;
     public Integer b;
     public String c;
 
-    public Tuple(Integer i_a, Integer i_b,String i_c)
+    public Tuple_float(Float i_a, Integer i_b,String i_c)
     {
         a = i_a;
         b = i_b;
         c = i_c;
     }
 
-    public void setFirst(Integer i)
+    public void setFirst(Float i)
     {
         a = i;
     }
@@ -25,7 +25,7 @@ public class Tuple {
     {
         c = i;
     }
-    public Integer getFirst()
+    public Float getFirst()
     {
         return a;
     }
@@ -36,11 +36,6 @@ public class Tuple {
     public String getThird()
     {
         return c;
-    }
-
-    @Override
-    public String toString() {
-        return "Premiere pos: " + a + " Second Pos: " + b + " ThirdPos: " + c;
     }
 
 }

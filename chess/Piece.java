@@ -17,9 +17,13 @@ public class Piece {
     ArrayList<String> namePiece = new ArrayList<String>((Arrays.asList(VIDE,"KING","QUEEN","TOWER","KNIGHT","BISHOP","PAWN")));
     
     // Scrore of each piece
-    ArrayList<Integer> valPiece = new ArrayList<Integer>((Arrays.asList(0,99999,200,5,3,3,1)));
+    ArrayList<Integer> valPiece = new ArrayList<Integer>((Arrays.asList(0,9999999,900,500,320,330,100)));
 
-    public Integer getVal() {
+    public Integer getVal(String i_color) {
+        if(this.name.equals("KING") && !this.color.equals(i_color))
+        {
+            value = value/2;
+        }
         return (value);
     }
     // For the piece moves, using "mail box" method
@@ -289,7 +293,7 @@ public class Piece {
         return list;
     }
 
-    public ArrayList<Tuple> pos2_king(Integer pos1,String cAd, Board chess_board, Boolean Attack){
+    public ArrayList<Tuple> pos2_king_1(Integer pos1,String cAd, Board chess_board, Boolean Attack){
         //returns the list of move's possible of knight
         ArrayList<Tuple> list = new ArrayList<Tuple>();
         ArrayList<Piece> chess_t = chess_board.getValues();
@@ -310,67 +314,135 @@ public class Piece {
             }
         }
 
-        // String c = chess_board.oppositeColor(cAd);
+        String c = chess_board.oppositeColor(cAd);
 
-        // if(c.equals("WHITE"))
-        // {
-        //     if(chess_board.getWhiteCanCastling63()){
-        //         if(chess_t.get(63).name=="TOWER" &&
-        //         chess_t.get(63).color()=="WHITE" &&
-        //         chess_t.get(61).isEmpty() &&
-        //         chess_t.get(62).isEmpty() &&
-        //         chess_board.isAttacked(61,"BLACK",chess_board) == false &&
-        //         chess_board.isAttacked(62,"BLACK",chess_board) == false &&
-        //         chess_board.isAttacked(pos1,"BLACK",chess_board) == false){
-        //             list.add(new Tuple(pos1, 62, ""));
+        if(c.equals("WHITE"))
+        {
+            if(chess_board.getWhiteCanCastling63()){
+                 if(chess_t.get(63).name=="TOWER" &&
+                 chess_t.get(63).color()=="WHITE" &&
+                 chess_t.get(61).isEmpty()&&
+                 chess_t.get(62).isEmpty()
+                 && !Attack
+                 ){
+                     list.add(new Tuple(pos1, 62, ""));
 
-        //         }
-        //     }
-        //     if(chess_board.getWhiteCanCastling56()){
-        //         if(chess_t.get(56).name=="TOWER" &&
-        //         chess_t.get(56).color()=="WHITE" &&
-        //         chess_t.get(57).isEmpty() &&
-        //         chess_t.get(58).isEmpty() &&
-        //         chess_t.get(59).isEmpty() &&
-        //         chess_board.isAttacked(58,"BLACK",chess_board) == false &&
-        //         chess_board.isAttacked(59,"BLACK",chess_board) == false &&
-        //         chess_board.isAttacked(pos1,"BLACK",chess_board) == false){
-        //             list.add(new Tuple(pos1, 58, ""));
+                 }
+             }
+             if(chess_board.getWhiteCanCastling56()){
+                 if(chess_t.get(56).name=="TOWER" &&
+                 chess_t.get(56).color()=="WHITE" &&
+                 chess_t.get(57).isEmpty() &&
+                 chess_t.get(58).isEmpty() &&
+                 chess_t.get(59).isEmpty()&& !Attack
+                 ){
+                     list.add(new Tuple(pos1, 58, ""));
 
-        //         }
-        //     }
+                 }
+             }
 
-        // }
+         }
 
-        // else
-        // {
-        //     if(chess_board.getBlackCanCastling7()){
-        //         if(chess_t.get(7).name=="TOWER" &&
-        //         chess_t.get(7).color()=="WHITE" &&
-        //         chess_t.get(5).isEmpty() &&
-        //         chess_t.get(6).isEmpty() &&
-        //         chess_board.isAttacked(5,"BLACK",chess_board) == false &&
-        //         chess_board.isAttacked(6,"BLACK",chess_board) == false &&
-        //         chess_board.isAttacked(pos1,"BLACK",chess_board) == false){
-        //             list.add(new Tuple(pos1, 6, ""));
+         else
+         {
+             if(chess_board.getBlackCanCastling7()){
+                 if(chess_t.get(7).name=="TOWER" &&
+                 chess_t.get(7).color()=="BLACK" &&
+                 chess_t.get(5).isEmpty() &&
+                 chess_t.get(6).isEmpty()&& !Attack ){
+                     list.add(new Tuple(pos1, 6, ""));
 
-        //         }
-        //     }
-        //     if(chess_board.getBlackCanCastling0()){
-        //         if(chess_t.get(0).name=="TOWER" &&
-        //         chess_t.get(0).color()=="WHITE" &&
-        //         chess_t.get(1).isEmpty() &&
-        //         chess_t.get(2).isEmpty() &&
-        //         chess_t.get(3).isEmpty() &&
-        //         chess_board.isAttacked(2,"BLACK",chess_board) == false &&
-        //         chess_board.isAttacked(3,"BLACK",chess_board) == false &&
-        //         chess_board.isAttacked(pos1,"BLACK",chess_board) == false){
-        //             list.add(new Tuple(pos1, 2, ""));
+                 }
+             }
+             if(chess_board.getBlackCanCastling0()){
+                 if(chess_t.get(0).name=="TOWER" &&
+                 chess_t.get(0).color()=="BLACK" &&
+                 chess_t.get(1).isEmpty() &&
+                 chess_t.get(2).isEmpty() &&
+                 chess_t.get(3).isEmpty()&& !Attack ){
+                     list.add(new Tuple(pos1, 2, ""));
 
-        //         }
-        //     }
+                 }
+             }
 
-        // }
+         }
+        return list;
+    }
+
+
+    public ArrayList<Tuple> pos2_king_2(Integer pos1,String cAd, Board chess_board){
+        //returns the list of move's possible of knight
+        ArrayList<Tuple> list = new ArrayList<Tuple>();
+        ArrayList<Piece> chess_t = chess_board.getValues();
+        for(int i=0;i<move_tower.size();i++){
+            Integer n = tab120.get(tab64.get(pos1)+move_tower.get(i));
+            if(n!=-1){
+                if(chess_t.get(n).isEmpty() || cAd.equals(chess_t.get(n).color())){
+                    list.add(new Tuple(pos1,n,""));
+                }
+            }
+        }
+        for(int i=0; i<move_bishop.size(); i++){
+            Integer n = tab120.get(tab64.get(pos1)+move_bishop.get(i));
+            if(n!=-1){
+                if(chess_t.get(n).isEmpty() || cAd.equals(chess_t.get(n).color())){
+                    list.add(new Tuple(pos1,n,""));
+                }
+            }
+        }
+
+        String c = chess_board.oppositeColor(cAd);
+
+        if(c.equals("WHITE"))
+        {
+            if(chess_board.getWhiteCanCastling63()){
+                 if(chess_t.get(63).name=="TOWER" &&
+                 chess_t.get(63).color()=="WHITE" &&
+                 chess_t.get(61).isEmpty()&&
+                 chess_t.get(62).isEmpty()
+                 
+                 ){
+                     list.add(new Tuple(pos1, 62, ""));
+
+                 }
+             }
+             if(chess_board.getWhiteCanCastling56()){
+                 if(chess_t.get(56).name=="TOWER" &&
+                 chess_t.get(56).color()=="WHITE" &&
+                 chess_t.get(57).isEmpty() &&
+                 chess_t.get(58).isEmpty() &&
+                 chess_t.get(59).isEmpty()
+                 ){
+                     list.add(new Tuple(pos1, 58, ""));
+
+                 }
+             }
+
+         }
+
+         else
+         {
+             if(chess_board.getBlackCanCastling7()){
+                 if(chess_t.get(7).name=="TOWER" &&
+                 chess_t.get(7).color()=="BLACK" &&
+                 chess_t.get(5).isEmpty() &&
+                 chess_t.get(6).isEmpty()){
+                     list.add(new Tuple(pos1, 6, ""));
+
+                 }
+             }
+             if(chess_board.getBlackCanCastling0()){
+                 if(chess_t.get(0).name=="TOWER" &&
+                 chess_t.get(0).color()=="BLACK" &&
+                 chess_t.get(1).isEmpty() &&
+                 chess_t.get(2).isEmpty() &&
+                 chess_t.get(3).isEmpty() ){
+                     list.add(new Tuple(pos1, 2, ""));
+
+                 }
+             }
+
+         }
         return list;
     }
 
