@@ -39,8 +39,11 @@ public class App {
              writeFile("Color of our king: "+color+" King is checked: "+ init.isChecked());
 
             int profondeur = 3;
-            if(init.howMuchPiece("", true) <= 7) {
+            int howMuchPiece_int = init.howMuchPiece("", true);
+            if(howMuchPiece_int <= 7 && howMuchPiece_int >5) {
                 profondeur = 4;
+            } else if (howMuchPiece_int <=5) {
+                profondeur =5;
             }
             //Creation de l'arbre
             writeFile("Create Tree, profondeur: " + profondeur);
