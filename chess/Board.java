@@ -11,6 +11,7 @@ import chess.Tuple;
 public class Board{
     // Define the next color to play 
     // Init the 8x8 chess board ArrayList object
+    public int nb_coup = 0;
     public String color;
     public static ArrayList<String> coord = new ArrayList<String>(Arrays.asList(
         "a8","b8","c8","d8","e8","f8","g8","h8",
@@ -147,6 +148,17 @@ public class Board{
               0f, 5f, 5f, 5f, 5f, 0f, -10f, -10f, 0f,
                0f, 0f, 0f, 0f, 0f, -10f, -20f, -10f,
                 -10f, -5f, -5f, -10f, -10f, -20f));
+
+                public static ArrayList<Float> s_king_w_end = new ArrayList<Float>(Arrays.asList(-50f,-40f,-30f,-20f,-20f,-30f,-40f,-50f,
+                -30f,-20f,-10f,  0f,  0f,-10f,-20f,-30f,
+                -30f,-10f, 20f, 30f, 30f, 20f,-10f,-30f,
+                -30f,-10f, 30f, 40f, 40f, 30f,-10f,-30f,
+                -30f,-10f, 30f, 40f, 40f, 30f,-10f,-30f,
+                -30f,-10f, 20f, 30f, 30f, 20f,-10f,-30f,
+                -30f,-30f,  0f,  0f,  0f,  0f,-30f,-30f,
+                -50f,-30f,-30f,-30f,-30f,-30f,-30f,-50f));
+
+                public static ArrayList<Float> s_king_b_end = new ArrayList<Float>(Arrays.asList(-50.0f, -30.0f, -30.0f, -30.0f, -30.0f, -30.0f, -30.0f, -50.0f, -30.0f, -30.0f, 0.0f, 0.0f, 0.0f, 0.0f, -30.0f, -30.0f, -30.0f, -10.0f, 20.0f, 30.0f, 30.0f, 20.0f, -10.0f, -30.0f, -30.0f, -10.0f, 30.0f, 40.0f, 40.0f, 30.0f, -10.0f, -30.0f, -30.0f, -10.0f, 30.0f, 40.0f, 40.0f, 30.0f, -10.0f, -30.0f, -30.0f, -10.0f, 20.0f, 30.0f, 30.0f, 20.0f, -10.0f, -30.0f, -3.0f, -20.0f, -10.0f, 0.0f, 0.0f, -10.0f, -20.0f, -30.0f, -50.0f, -40.0f, -30.0f, -20.0f, -20.0f, -30.0f, -40.0f, -50.0f));
 
     public void SetColor(String i_color) { color = i_color;}
     public String getColor() { return color; }
@@ -310,6 +322,23 @@ public class Board{
      * 
      */
     public void move_piece_without_check(String move) {
+        nb_coup += 1;
+        // We have a pawn which transforms in a queen
+        if(move.length() == 5) {
+            String new_piece = Character.toString(move.charAt(4));
+            String new_move = move.substring(0, 4);
+            Tuple new_positions = convert_string_move_to_index(new_move);
+            String color_piece = values.get(new_positions.getFirst()).color;
+            values.set(new_positions.getFirst(), new Piece());
+            if("q".equals(new_piece)) {
+                values.set(new_positions.getSecond(), new Piece("QUEEN", color_piece));
+            } else if("r".equals(new_piece)) {
+                values.set(new_positions.getSecond(), new Piece("TOWER", color_piece));
+            } else if("b".equals(new_piece)) {
+                values.set(new_positions.getSecond(), new Piece("BISHOP", color_piece));
+            } 
+        }
+
         Tuple positions = convert_string_move_to_index(move);
 
         if(this.getValues().get(4).name().equals("KING") && move.equals("e8g8")){
@@ -585,6 +614,17 @@ public class Board{
         return this.whiteCanCastling63;
     }
 
+    public int howMuchPiece(String color, boolean both_color) {
+        int result = 0;
+
+        for(Piece piece : values) {
+            if(!piece.name.equals(piece.VIDE) && (both_color || color.equals(piece.color))) {
+                result += 1;
+            }
+        }
+        return result;
+    }
+
     public Float heuristic(){
         Float WhiteScore = 0.0f;
         Float BlackScore = 0.0f;
@@ -602,7 +642,12 @@ public class Board{
                             score_piece=val+s_bishop_w.get(i);
                         }
                         else if(getValues().get(i).name().equals("KING")){
-                            score_piece=(float)val + s_king_w.get(i);
+                            if(this.howMuchPiece("WHITE", false) <= 7) {
+                                score_piece=(float)val + s_king_w_end.get(i);
+                            } else {
+                                score_piece=(float)val + s_king_w.get(i);
+                            }
+                            
                         }
                         else if(getValues().get(i).name().equals("PAWN")){
                             score_piece=val+s_pawn_w.get(i);
@@ -628,7 +673,13 @@ public class Board{
                         score_piece =val+s_bishop_b.get(i);
                     }
                     else if(getValues().get(i).name().equals("KING")){
-                        score_piece =(float)val + s_king_b.get(i);
+                        if(this.howMuchPiece("BLACK", false) <= 7) {
+                            score_piece = (float)val + s_king_b_end.get(i);
+                        } else {
+                            score_piece =(float)val + s_king_b.get(i);
+                        }
+                        
+                        
                     }
                     else if(getValues().get(i).name().equals("PAWN")){
                         score_piece =val+s_pawn_b.get(i);

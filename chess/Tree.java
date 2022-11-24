@@ -83,28 +83,35 @@ public class Tree{
              // writeFile("Color of the Chess ?: "+chess_node.getColor()+"Heuristic?: "+chess_node.heuristic());
             // // }
             if(chess_node.getValues() == null){
-                return new Tuple_float(0.0f, -1, "");
+                return new Tuple_float(0.0f, -1, "Ne pas prendre en compte");
             }
             result.setFirst(chess_node.heuristic());
             result.setThird(chess_node.getCoord(this.moveObj.getFirst()).toString()+chess_node.getCoord(this.moveObj.getSecond()).toString());
             return result;
         } else{
             for(Tree child: children){
+                if(child.chess_node.getValues() == null) {
+                    continue;
+                }
                 Tuple_float tmp = child.minimax(profondeur-1, !evalMax);
+                
                 if(!tmp.getThird().equals("")){ 
                     liste.add(tmp.getFirst());
                     liste_move.add(tmp.getThird());}
                 
             }
-            
-            if(evalMax){
-                Float i = Collections.max(liste);
-                String move_one = liste_move.get(liste.indexOf(i)) + " " + chess_node.getCoord(this.moveObj.getFirst()).toString()+chess_node.getCoord(this.moveObj.getSecond()).toString();
-                return new Tuple_float(i, -1, move_one);
+            if(children.size() != 0) {
+                if(evalMax){
+                    Float i = Collections.max(liste);
+                    String move_one = liste_move.get(liste.indexOf(i)) + " " + chess_node.getCoord(this.moveObj.getFirst()).toString()+chess_node.getCoord(this.moveObj.getSecond()).toString();
+                    return new Tuple_float(i, -1, move_one);
+                } else {
+                    Float i = Collections.min(liste);
+                    String move_one = liste_move.get(liste.indexOf(i)) + " " + chess_node.getCoord(this.moveObj.getFirst()).toString()+chess_node.getCoord(this.moveObj.getSecond()).toString();
+                    return new Tuple_float(i, -1, move_one);
+                }
             } else {
-                Float i = Collections.min(liste);
-                String move_one = liste_move.get(liste.indexOf(i)) + " " + chess_node.getCoord(this.moveObj.getFirst()).toString()+chess_node.getCoord(this.moveObj.getSecond()).toString();
-                return new Tuple_float(i, -1, move_one);
+                return result;
             }
         }
     }

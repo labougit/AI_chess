@@ -38,22 +38,26 @@ public class App {
             String color_ennemy = api_stdin.ImWhite()?"BLACK":"WHITE";
              writeFile("Color of our king: "+color+" King is checked: "+ init.isChecked());
 
+            int profondeur = 3;
+            if(init.howMuchPiece("", true) <= 7) {
+                profondeur = 4;
+            }
             //Creation de l'arbre
-            writeFile("Create Tree");
+            writeFile("Create Tree, profondeur: " + profondeur);
             long begin_time = System.currentTimeMillis();
-            Tree arbre = new Tree(3, init, api_stdin.ImWhite(), new Tuple(0, 0, ""));
+            Tree arbre = new Tree(profondeur, init, api_stdin.ImWhite(), new Tuple(0, 0, ""));
             long end_time = System.currentTimeMillis() - begin_time;
             writeFile("Time tree: " + end_time + "ms.");
 
             //devine le bon chemin
             writeFile("End tree, find max mov");
             begin_time = System.currentTimeMillis();
-            String moves = arbre.minimax(3, true).getThird(); //first minimax
-            String[] move_list = moves.split(" ");  
+            String moves = arbre.minimax(profondeur, true).getThird(); //first minimax
+            String[] move_list = moves.split(" "); 
             // 3 fold repetition
             moves_preced.add(move_list[move_list.length-2]);
             //writeFile("fréquence : " + Collections.frequency(moves_preced, moves));
-            if ( Collections.frequency(moves_preced, move_list[move_list.length-2])==2){
+            if ( Collections.frequency(moves_preced, move_list[move_list.length-2])==2 && !init.isChecked()){
                 // moves_preced.clear();
                 arbre.destroyNode(move_list[move_list.length-2]);
                 //writeFile("moves précedent : " + move_list[move_list.length-2]);
@@ -62,11 +66,12 @@ public class App {
                 moves_preced.add(move_list[move_list.length-2]);     
                 
             }
+            writeFile("Moves preced: " + moves_preced);
             end_time = System.currentTimeMillis() - begin_time;
             //writeFile("Time find move: "+ end_time + "ms.");
             //writeFile("Moves: " + moves);
             api_stdin.moveSend(move_list[move_list.length-2]);
-            writeFile(moves_preced.toString());
+            //writeFile(moves_preced.toString());
             
         }
 

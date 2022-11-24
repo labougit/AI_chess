@@ -369,6 +369,22 @@ public class Piece {
         return list;
     }
 
+    private boolean ourKing(int n, ArrayList<Piece> chess_t) {
+        int position_around_King[] = {1, -1, 9, -9, -11, 11, 10, -10};
+        boolean verite = true;
+        for(int position: position_around_King) {
+            int position_x = tab120.get(tab64.get(n)+position);
+            if(position_x != -1) {
+                verite = verite && !chess_t.get(position_x).name.equals("KING");
+            }
+            
+        }
+        // boolean verite = !chess_t.get(n+1).name.equals("KING") && !chess_t.get(n-1).name.equals("KING") && !chess_t.get(n+11).name.equals("KING")
+        //         && !chess_t.get(n-11).name.equals("KING") && !chess_t.get(n+10).name.equals("KING") && !chess_t.get(n-10).name.equals("KING") 
+        //         && !chess_t.get(n+9).name.equals("KING") && !chess_t.get(n-9).name.equals("KING");
+
+        return verite;
+    }
 
     public ArrayList<Tuple> pos2_king_2(Integer pos1,String cAd, Board chess_board){
         //returns the list of move's possible of knight
@@ -377,7 +393,7 @@ public class Piece {
         for(int i=0;i<move_tower.size();i++){
             Integer n = tab120.get(tab64.get(pos1)+move_tower.get(i));
             if(n!=-1){
-                if(chess_t.get(n).isEmpty() || cAd.equals(chess_t.get(n).color())){
+                if((chess_t.get(n).isEmpty() && ourKing(n, chess_t))|| cAd.equals(chess_t.get(n).color())){
                     list.add(new Tuple(pos1,n,""));
                 }
             }
